@@ -10,9 +10,47 @@ import '../models/news.dart';
 class NewsRepository {
   final apiKey = Config.apiKey;
 
+  // TODO: Use to fetch news according to user's preference
   Future<List<News>> fetchNews() async {
-    final url = Uri.parse(
-        'https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=$apiKey');
+    final url = Uri(
+      scheme: 'https',
+      host: 'newsapi.org',
+      path: 'v2/top-headlines',
+      queryParameters: {
+        'apiKey': apiKey,
+        'country': 'in',
+        'pageSize': '30',
+      },
+    );
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+        // convert each json article into list of article
+        return List<News>.from(
+          body['articles'].map((article) => News.fromMap(article)),
+        );
+      } else {
+        throw 'Error fetching news articles';
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<News>> fetchTopHeadlines() async {
+    final url = Uri(
+      scheme: 'https',
+      host: 'newsapi.org',
+      path: 'v2/top-headlines',
+      queryParameters: {
+        'apiKey': apiKey,
+        'country': 'us',
+        'pageSize': '30',
+      },
+    );
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -37,4 +75,9 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
 final newsListFutureProvider = FutureProvider<List<News>>((ref) async {
   final newsRepository = ref.read(newsRepositoryProvider);
   return newsRepository.fetchNews();
+});
+
+final topHeadlinesFutureProvider = FutureProvider<List<News>>((ref) async {
+  final newsRepository = ref.read(newsRepositoryProvider);
+  return newsRepository.fetchTopHeadlines();
 });
