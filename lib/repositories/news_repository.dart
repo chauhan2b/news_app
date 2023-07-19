@@ -15,11 +15,13 @@ class NewsRepository {
     final url = Uri(
       scheme: 'https',
       host: 'newsapi.org',
-      path: 'v2/top-headlines',
+      path: 'v2/everything',
       queryParameters: {
         'apiKey': apiKey,
-        'country': 'in',
-        'pageSize': '30',
+        'q': '',
+        'domains': 'ign.com',
+        'language': 'en',
+        'sortBy': 'publishedAt',
       },
     );
 
