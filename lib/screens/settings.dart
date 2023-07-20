@@ -37,35 +37,31 @@ class _SettingsState extends ConsumerState<Settings> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Dark Mode',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      ),
+                ListTile(
+                  leading: _isDarkModeEnabled
+                      ? const Icon(Icons.dark_mode)
+                      : const Icon(Icons.dark_mode_outlined),
+                  title: const Text(
+                    'Dark Mode',
+                    style: TextStyle(
+                      fontSize: 16.0,
                     ),
-                    Switch(
-                      value: _isDarkModeEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDarkModeEnabled = value;
-                          _isDarkModeEnabled
-                              ? AdaptiveTheme.of(context).setDark()
-                              : AdaptiveTheme.of(context).setLight();
-                        });
-                        ref
-                            .read(darkModeServiceProvider)
-                            .saveDarkModeState(value);
-                      },
-                    ),
-                  ],
+                  ),
+                  trailing: Switch(
+                    value: _isDarkModeEnabled,
+                    onChanged: (value) {
+                      setState(() {
+                        _isDarkModeEnabled = value;
+                        _isDarkModeEnabled
+                            ? AdaptiveTheme.of(context).setDark()
+                            : AdaptiveTheme.of(context).setLight();
+                      });
+                      ref
+                          .read(darkModeServiceProvider)
+                          .saveDarkModeState(value);
+                    },
+                  ),
                 ),
               ],
             ),

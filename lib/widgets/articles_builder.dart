@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -92,9 +93,7 @@ class ArticlesBuilder extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.fade,
                       ),
-
                       const Spacer(),
-                      // Text(DateFormat.yMEd().format(article.publishedAt)),
                       IconButton(
                         icon: const Icon(Icons.favorite_border),
                         padding: EdgeInsets.zero,
@@ -103,7 +102,9 @@ class ArticlesBuilder extends StatelessWidget {
                       IconButton(
                         padding: EdgeInsets.zero,
                         icon: const Icon(Icons.share_outlined),
-                        onPressed: () {},
+                        onPressed: () {
+                          Share.share(article.url);
+                        },
                       ),
                     ],
                   ),

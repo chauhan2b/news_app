@@ -31,15 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIndex: currentIndex,
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.feed),
+            icon: Icon(Icons.feed_outlined),
+            selectedIcon: Icon(Icons.feed),
             label: 'My Feed',
           ),
           NavigationDestination(
-            icon: Icon(Icons.language),
+            icon: Icon(Icons.public),
+            selectedIcon: Icon(Icons.public_outlined),
             label: 'Headlines',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],

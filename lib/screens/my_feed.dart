@@ -13,11 +13,20 @@ class MyFeed extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Feed'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.sort),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 1));
-          return await ref.refresh(newsListFutureProvider);
+          return ref.refresh(newsListFutureProvider);
         },
         child: futureNews.when(
           data: (news) => ArticlesBuilder(articles: news),

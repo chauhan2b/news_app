@@ -12,6 +12,10 @@ class NewsRepository {
 
   // TODO: Use to fetch news according to user's preference
   Future<List<News>> fetchNews() async {
+    // final domains = newsParameters.domains.join(',');
+    // final sortBy = newsParameters.sortBy.name;
+
+    // generating url
     final url = Uri(
       scheme: 'https',
       host: 'newsapi.org',
@@ -20,8 +24,8 @@ class NewsRepository {
         'apiKey': apiKey,
         'q': '',
         'domains': 'ign.com',
-        'language': 'en',
         'sortBy': 'publishedAt',
+        'language': 'en',
       },
     );
 
