@@ -1,11 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../config/config.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/news.dart';
+
+part 'news_repository.g.dart';
 
 class NewsRepository {
   final apiKey = Config.apiKey;
@@ -15,7 +17,7 @@ class NewsRepository {
     // final domains = newsParameters.domains.join(',');
     // final sortBy = newsParameters.sortBy.name;
 
-    // generating url
+    // generating url with parameters
     final url = Uri(
       scheme: 'https',
       host: 'newsapi.org',
@@ -46,13 +48,14 @@ class NewsRepository {
   }
 
   Future<List<News>> fetchTopHeadlines() async {
+    // generating url with parameters
     final url = Uri(
       scheme: 'https',
       host: 'newsapi.org',
       path: 'v2/top-headlines',
       queryParameters: {
         'apiKey': apiKey,
-        'country': 'us',
+        'country': 'in',
         'pageSize': '30',
       },
     );
@@ -74,16 +77,18 @@ class NewsRepository {
   }
 }
 
-final newsRepositoryProvider = Provider<NewsRepository>((ref) {
+@riverpod
+NewsRepository newsRepository(NewsRepositoryRef ref) {
   return NewsRepository();
-});
+}
 
-final newsListFutureProvider = FutureProvider<List<News>>((ref) async {
-  final newsRepository = ref.read(newsRepositoryProvider);
-  return newsRepository.fetchNews();
-});
+@Riverpod(keepAlive: true)
+FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) {
+  // final sortBy = ref.read(sortByStateProvider);
+  return ref.read(newsRepositoryProvider).fetchNews();
+}
 
-final topHeadlinesFutureProvider = FutureProvider<List<News>>((ref) async {
-  final newsRepository = ref.read(newsRepositoryProvider);
-  return newsRepository.fetchTopHeadlines();
-});
+@Riverpod(keepAlive: true)
+FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref) {
+  return ref.read(newsRepositoryProvider).fetchTopHeadlines();
+}

@@ -10,14 +10,20 @@ class ArticlesBuilder extends StatelessWidget {
   const ArticlesBuilder({
     super.key,
     required this.articles,
+    required this.controller,
+    required this.pageKey,
   });
 
   final List<News> articles;
+  final ScrollController controller;
+  final ValueKey pageKey;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return ListView.separated(
+        key: PageStorageKey(pageKey),
+        controller: controller,
         separatorBuilder: (context, index) =>
             const Divider(indent: 12.0, endIndent: 12.0),
         itemCount: articles.length,
@@ -26,6 +32,8 @@ class ArticlesBuilder extends StatelessWidget {
           final dateTime = DateTime.now().difference(article.publishedAt);
           final articleDate = DateTime.now().subtract(dateTime);
           return InkWell(
+            splashColor: Colors.purpleAccent.withOpacity(0.04),
+            highlightColor: Colors.purpleAccent.withOpacity(0.08),
             onTap: () async {
               if (!await launchUrl(
                 Uri.parse(article.url),
@@ -59,10 +67,13 @@ class ArticlesBuilder extends StatelessWidget {
                           ),
                         );
                       },
-                      errorBuilder: (context, error, stackTrace) => Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: size.height * 0.1),
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.purple.withOpacity(0.08),
+                        height: size.height * 0.26,
+                        width: double.infinity,
                         child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(Icons.error),
                             Text('Could not load image'),
@@ -94,11 +105,6 @@ class ArticlesBuilder extends StatelessWidget {
                         overflow: TextOverflow.fade,
                       ),
                       const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                      ),
                       IconButton(
                         padding: EdgeInsets.zero,
                         icon: const Icon(Icons.share_outlined),
