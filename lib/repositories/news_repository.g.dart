@@ -21,7 +21,7 @@ final newsRepositoryProvider = AutoDisposeProvider<NewsRepository>.internal(
 );
 
 typedef NewsRepositoryRef = AutoDisposeProviderRef<NewsRepository>;
-String _$newsListFutureHash() => r'17e574268e1fae870d86ac2316787f86345ec457';
+String _$newsListFutureHash() => r'f2fdd3498f5936a5a08316c3f44cb5c78b771c22';
 
 /// See also [newsListFuture].
 @ProviderFor(newsListFuture)
@@ -36,6 +36,110 @@ final newsListFutureProvider = FutureProvider<List<News>>.internal(
 );
 
 typedef NewsListFutureRef = FutureProviderRef<List<News>>;
+String _$searchResultsHash() => r'41351bbfaa9cd89e7ed090911be0ce1fb9f35d6a';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+typedef SearchResultsRef = AutoDisposeFutureProviderRef<List<News>>;
+
+/// See also [searchResults].
+@ProviderFor(searchResults)
+const searchResultsProvider = SearchResultsFamily();
+
+/// See also [searchResults].
+class SearchResultsFamily extends Family<AsyncValue<List<News>>> {
+  /// See also [searchResults].
+  const SearchResultsFamily();
+
+  /// See also [searchResults].
+  SearchResultsProvider call(
+    String query,
+  ) {
+    return SearchResultsProvider(
+      query,
+    );
+  }
+
+  @override
+  SearchResultsProvider getProviderOverride(
+    covariant SearchResultsProvider provider,
+  ) {
+    return call(
+      provider.query,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'searchResultsProvider';
+}
+
+/// See also [searchResults].
+class SearchResultsProvider extends AutoDisposeFutureProvider<List<News>> {
+  /// See also [searchResults].
+  SearchResultsProvider(
+    this.query,
+  ) : super.internal(
+          (ref) => searchResults(
+            ref,
+            query,
+          ),
+          from: searchResultsProvider,
+          name: r'searchResultsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$searchResultsHash,
+          dependencies: SearchResultsFamily._dependencies,
+          allTransitiveDependencies:
+              SearchResultsFamily._allTransitiveDependencies,
+        );
+
+  final String query;
+
+  @override
+  bool operator ==(Object other) {
+    return other is SearchResultsProvider && other.query == query;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
 String _$topHeadlinesFutureHash() =>
     r'7252d05be642b56862ccf4697d9ce08f0075e9d5';
 

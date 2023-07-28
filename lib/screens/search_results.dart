@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app/repositories/news_repository.dart';
+import 'package:news_app/widgets/show_dialog_box.dart';
+
+import '../widgets/articles_builder.dart';
+
+class SearchResults extends ConsumerWidget {
+  const SearchResults({
+    super.key,
+    required this.query,
+  });
+  final String query;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final results = ref.watch(searchResultsProvider(query));
+    final scrollController = ScrollController();
+    const pageKey = ValueKey('search-results');
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Your results'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showDialogBox(context, ref);
+                ref.refresh(searchResultsProvider(query));
+              },
+              icon: const Icon(Icons.sort),
+            )
+          ],
+        ),
+        body: results.when(
+          data: (news) => ArticlesBuilder(
+            articles: news,
+            controller: scrollController,
+            pageKey: pageKey,
+          ),
+          error: (error, stackTrace) => Center(child: Text(error.toString())),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        ));
+  }
+}

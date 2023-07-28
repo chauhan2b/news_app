@@ -1,7 +1,10 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:news_app/services/dark_mode_service.dart';
+
+import '../routing/router.dart';
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -37,6 +40,7 @@ class _SettingsState extends ConsumerState<Settings> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 ListTile(
                   leading: _isDarkModeEnabled
@@ -62,6 +66,13 @@ class _SettingsState extends ConsumerState<Settings> {
                           .saveDarkModeState(value);
                     },
                   ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.newspaper_outlined),
+                  title: const Text('Manage sources'),
+                  onTap: () {
+                    context.pushNamed(AppRoute.manageSources.name);
+                  },
                 ),
               ],
             ),

@@ -63,7 +63,11 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
             onPressed: () {
               if (scrollController.hasClients) {
                 final position = scrollController.position.minScrollExtent;
-                scrollController.jumpTo(position);
+                scrollController.animateTo(
+                  position,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
                 setState(() {
                   showFab = false;
                 });

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:news_app/repositories/news_repository.dart';
+import 'package:news_app/routing/router.dart';
 
-import '../widgets/show_dialog_box.dart';
 import '../widgets/articles_builder.dart';
 
 class MyFeed extends ConsumerStatefulWidget {
@@ -15,27 +16,79 @@ class MyFeed extends ConsumerStatefulWidget {
 
 class _MyFeedState extends ConsumerState<MyFeed> {
   bool showFab = false;
+  bool isTyping = false;
+  final focusNode = FocusNode();
+  final controller = TextEditingController();
+
+  void hideKeyboard() {
+    setState(() {
+      isTyping = false;
+    });
+    focusNode.unfocus();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    focusNode.dispose();
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final futureNews = ref.watch(newsListFutureProvider);
+
     final scrollController = ScrollController();
     const pageKey = ValueKey('my-feed');
     const duration = Duration(milliseconds: 300);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Feed'),
+        automaticallyImplyLeading: false,
+        title: isTyping
+            ? TextField(
+                focusNode: focusNode,
+                controller: controller,
+                autofocus: true,
+                textAlignVertical: TextAlignVertical.center,
+                onSubmitted: (value) {
+                  hideKeyboard();
+                  context.pushNamed(
+                    AppRoute.searchResults.name,
+                    queryParameters: {'query': value},
+                  );
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search articles',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: InkWell(
+                      borderRadius: BorderRadius.circular(30),
+                      onTap: () {
+                        controller.clear();
+                      },
+                      child: const Icon(Icons.close)),
+                  // suffix: IconButton(
+                  //   icon: const Icon(Icons.close),
+                  //   onPressed: () {
+                  //     hideKeyboard();
+                  //   },
+                  // ),
+                  border: InputBorder.none,
+                ),
+              )
+            : const Text('My Feed'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.sort),
-            onPressed: () {
-              showDialogBox(context, ref);
-            },
-          ),
+          isTyping
+              ? Container()
+              : IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      isTyping = true;
+                    });
+                  },
+                ),
         ],
       ),
       body: NotificationListener<UserScrollNotification>(
@@ -44,8 +97,10 @@ class _MyFeedState extends ConsumerState<MyFeed> {
           setState(() {
             if (direction == ScrollDirection.reverse) {
               showFab = false;
+              hideKeyboard();
             } else if (direction == ScrollDirection.forward) {
               showFab = true;
+              hideKeyboard();
             }
           });
           return true;
@@ -77,7 +132,11 @@ class _MyFeedState extends ConsumerState<MyFeed> {
             onPressed: () {
               if (scrollController.hasClients) {
                 final position = scrollController.position.minScrollExtent;
-                scrollController.jumpTo(position);
+                scrollController.animateTo(
+                  position,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
                 setState(() {
                   showFab = false;
                 });

@@ -12,7 +12,10 @@ void main() async {
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(
     ProviderScope(
-      child: MyApp(savedThemeMode: savedThemeMode),
+      child: MyApp(
+        // loads theme before app is built
+        savedThemeMode: savedThemeMode,
+      ),
     ),
   );
 }

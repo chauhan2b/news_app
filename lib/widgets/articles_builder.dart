@@ -21,103 +21,112 @@ class ArticlesBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return ListView.separated(
-        key: PageStorageKey(pageKey),
-        controller: controller,
-        separatorBuilder: (context, index) =>
-            const Divider(indent: 12.0, endIndent: 12.0),
-        itemCount: articles.length,
-        itemBuilder: (context, index) {
-          final article = articles[index];
-          final dateTime = DateTime.now().difference(article.publishedAt);
-          final articleDate = DateTime.now().subtract(dateTime);
-          return InkWell(
-            splashColor: Colors.purpleAccent.withOpacity(0.04),
-            highlightColor: Colors.purpleAccent.withOpacity(0.08),
-            onTap: () async {
-              if (!await launchUrl(
-                Uri.parse(article.url),
-                mode: LaunchMode.externalApplication,
-              )) {
-                throw Exception('Could not launch');
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: Image.network(
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
+    return articles.isEmpty
+        ? const Center(
+            child: Text(
+              'No articles found',
+              style: TextStyle(fontSize: 26.0),
+            ),
+          )
+        : ListView.separated(
+            key: PageStorageKey(pageKey),
+            controller: controller,
+            separatorBuilder: (context, index) =>
+                const Divider(indent: 12.0, endIndent: 12.0),
+            itemCount: articles.length,
+            itemBuilder: (context, index) {
+              final article = articles[index];
+              final dateTime = DateTime.now().difference(article.publishedAt);
+              final articleDate = DateTime.now().subtract(dateTime);
+              return InkWell(
+                splashColor: Colors.white.withOpacity(0.04),
+                highlightColor: Colors.purpleAccent.withOpacity(0.08),
+                onTap: () async {
+                  if (!await launchUrl(
+                    Uri.parse(article.url),
+                    mode: LaunchMode.externalApplication,
+                  )) {
+                    throw Exception('Could not launch');
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
 
-                        return SizedBox(
-                          height: size.height * 0.26,
-                          width: double.infinity,
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.deepPurple.withOpacity(0.05),
-                            highlightColor: Colors.deepPurple.withOpacity(0.2),
-                            child: Container(
-                              color: Colors.black,
+                            return SizedBox(
+                              height: size.height * 0.26,
+                              width: double.infinity,
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.deepPurple.withOpacity(0.05),
+                                highlightColor:
+                                    Colors.deepPurple.withOpacity(0.2),
+                                child: Container(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: Colors.purple.withOpacity(0.08),
+                            height: size.height * 0.26,
+                            width: double.infinity,
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.error),
+                                Text('Could not load image'),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: Colors.purple.withOpacity(0.08),
-                        height: size.height * 0.26,
-                        width: double.infinity,
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error),
-                            Text('Could not load image'),
-                          ],
+                          article.imageUrl,
+                          fit: BoxFit.cover,
+                          height: size.height * 0.26,
+                          width: double.infinity,
                         ),
                       ),
-                      article.imageUrl,
-                      fit: BoxFit.cover,
-                      height: size.height * 0.26,
-                      width: double.infinity,
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  Text(
-                    article.title,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  // const SizedBox(height: 6.0),
-                  Row(
-                    children: [
+                      const SizedBox(height: 12.0),
                       Text(
-                        '${article.source} | ${timeago.format(articleDate, locale: 'en_short')}',
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
+                        article.title,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const Spacer(),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: const Icon(Icons.share_outlined),
-                        onPressed: () {
-                          Share.share(article.url);
-                        },
+                      // const SizedBox(height: 6.0),
+                      Row(
+                        children: [
+                          Text(
+                            '${article.source} | ${timeago.format(articleDate, locale: 'en_short')}',
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            icon: const Icon(Icons.share_outlined),
+                            onPressed: () {
+                              Share.share(article.url);
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          );
-        });
+                ),
+              );
+            });
   }
 }
