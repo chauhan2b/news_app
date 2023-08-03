@@ -116,7 +116,26 @@ class _MyFeedState extends ConsumerState<MyFeed> {
               controller: scrollController,
               pageKey: pageKey,
             ),
-            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            error: (error, stackTrace) => LayoutBuilder(
+              builder: (context, constraints) {
+                return ListView(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$error\nHINT: Try adding some sources',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
             loading: () => const Center(child: CircularProgressIndicator()),
           ),
         ),

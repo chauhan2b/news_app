@@ -37,25 +37,16 @@ class ManageSources extends ConsumerWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 childCount: domains.length,
-                (context, index) => Dismissible(
-                  key: Key(domains[index]),
-                  background: Container(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    color: Colors.redAccent,
-                    child: const Align(
-                      alignment: Alignment.centerRight,
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
+                (context, index) => ListTile(
+                  title: Text(domains[index]),
+                  trailing: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      size: 18.0,
                     ),
-                  ),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (_) {
-                    ref.read(domainsProvider.notifier).remove(domains[index]);
-                  },
-                  child: ListTile(
-                    title: Text(domains[index]),
+                    onPressed: () {
+                      ref.read(domainsProvider.notifier).remove(domains[index]);
+                    },
                   ),
                 ),
               ),

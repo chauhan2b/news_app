@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,13 +8,9 @@ void main() async {
   // keeps device in portrait mode
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(
-    ProviderScope(
-      child: MyApp(
-        // loads theme before app is built
-        savedThemeMode: savedThemeMode,
-      ),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 }

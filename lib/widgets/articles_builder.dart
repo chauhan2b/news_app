@@ -21,6 +21,7 @@ class ArticlesBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    Color primaryColor = Theme.of(context).colorScheme.primary;
     return articles.isEmpty
         ? const Center(
             child: Text(
@@ -39,8 +40,8 @@ class ArticlesBuilder extends StatelessWidget {
               final dateTime = DateTime.now().difference(article.publishedAt);
               final articleDate = DateTime.now().subtract(dateTime);
               return InkWell(
-                splashColor: Colors.white.withOpacity(0.04),
-                highlightColor: Colors.purpleAccent.withOpacity(0.08),
+                splashColor: primaryColor.withOpacity(0.1),
+                highlightColor: primaryColor.withOpacity(0.1),
                 onTap: () async {
                   if (!await launchUrl(
                     Uri.parse(article.url),
@@ -66,9 +67,8 @@ class ArticlesBuilder extends StatelessWidget {
                               height: size.height * 0.26,
                               width: double.infinity,
                               child: Shimmer.fromColors(
-                                baseColor: Colors.deepPurple.withOpacity(0.05),
-                                highlightColor:
-                                    Colors.deepPurple.withOpacity(0.2),
+                                baseColor: primaryColor.withOpacity(0.05),
+                                highlightColor: primaryColor.withOpacity(0.2),
                                 child: Container(
                                   color: Colors.black,
                                 ),
@@ -77,7 +77,7 @@ class ArticlesBuilder extends StatelessWidget {
                           },
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
-                            color: Colors.purple.withOpacity(0.08),
+                            color: primaryColor.withOpacity(0.05),
                             height: size.height * 0.26,
                             width: double.infinity,
                             child: const Column(

@@ -1,81 +1,69 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_app/services/dark_mode_service.dart';
+import 'package:news_app/providers/dark_theme_provider.dart';
 
 import '../routing/router.dart';
 
-class Settings extends ConsumerStatefulWidget {
+class Settings extends ConsumerWidget {
   const Settings({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsState();
-}
-
-class _SettingsState extends ConsumerState<Settings> {
-  bool _isDarkModeEnabled = false;
-  bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    getDarkModeValue();
-  }
-
-  getDarkModeValue() async {
-    _isLoading = true;
-    _isDarkModeEnabled =
-        await ref.read(darkModeServiceProvider).loadDarkModeState();
-    setState(() {});
-    _isLoading = false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkModeAsync = ref.watch(darkThemeProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                ListTile(
-                  leading: _isDarkModeEnabled
-                      ? const Icon(Icons.dark_mode)
-                      : const Icon(Icons.dark_mode_outlined),
-                  title: const Text(
-                    'Dark Mode',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  trailing: Switch(
-                    value: _isDarkModeEnabled,
-                    onChanged: (value) {
-                      setState(() {
-                        _isDarkModeEnabled = value;
-                        _isDarkModeEnabled
-                            ? AdaptiveTheme.of(context).setDark()
-                            : AdaptiveTheme.of(context).setLight();
-                      });
-                      ref
-                          .read(darkModeServiceProvider)
-                          .saveDarkModeState(value);
-                    },
-                  ),
+      body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          darkModeAsync.when(
+            data: (darkMode) => ListTile(
+              leading: darkMode
+                  ? const Icon(Icons.dark_mode)
+                  : const Icon(Icons.dark_mode_outlined),
+              title: const Text(
+                'Dark Mode',
+                style: TextStyle(
+                  fontSize: 16.0,
                 ),
-                ListTile(
-                  leading: const Icon(Icons.newspaper_outlined),
-                  title: const Text('Manage sources'),
-                  onTap: () {
-                    context.pushNamed(AppRoute.manageSources.name);
-                  },
-                ),
-              ],
+              ),
+              trailing: Switch(
+                value: darkMode,
+                onChanged: (value) {
+                  ref.read(darkThemeProvider.notifier).setDarkMode(value);
+                },
+              ),
             ),
+            error: (error, stackTrace) =>
+                const Text('Error fetching dark theme status'),
+            loading: () => const Center(child: CircularProgressIndicator()),
+          ),
+          // ListTile(
+          //   leading: _isDarkModeEnabled
+          //       ? const Icon(Icons.dark_mode)
+          //       : const Icon(Icons.dark_mode_outlined),
+          //   title: const Text(
+          //     'Dark Mode',
+          //     style: TextStyle(
+          //       fontSize: 16.0,
+          //     ),
+          //   ),
+          //   trailing: Switch(
+          //     value: _isDarkModeEnabled,
+          //     onChanged: null,
+          //   ),
+          // ),
+          ListTile(
+            leading: const Icon(Icons.newspaper_outlined),
+            title: const Text('Manage sources'),
+            onTap: () {
+              context.pushNamed(AppRoute.manageSources.name);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
