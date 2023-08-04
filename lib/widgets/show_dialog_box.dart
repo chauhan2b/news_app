@@ -7,44 +7,42 @@ import '../providers/sort_by_state.dart';
 void showDialogBox(BuildContext context, WidgetRef ref) {
   final sortBy = ref.watch(sortByStateProvider);
 
-  void updateSortBy(value) {
-    ref.read(sortByStateProvider.notifier).state = value!;
+  void updateSortBy(SortBy value) {
+    ref.read(sortByStateProvider.notifier).state = value;
     context.pop();
   }
 
   showDialog(
       context: context,
-      builder: (BuildContext ctx) {
-        return Consumer(
-          builder: (_, ref, child) => SimpleDialog(
-            title: const Text('Sort by'),
-            children: [
-              RadioListTile(
-                title: const Text('Relevancy'),
-                value: SortBy.relevancy,
-                groupValue: sortBy,
-                onChanged: (value) {
-                  updateSortBy(value);
-                },
-              ),
-              RadioListTile(
-                title: const Text('Popularity'),
-                value: SortBy.popularity,
-                groupValue: sortBy,
-                onChanged: (value) {
-                  updateSortBy(value);
-                },
-              ),
-              RadioListTile(
-                title: const Text('Latest'),
-                value: SortBy.publishedAt,
-                groupValue: sortBy,
-                onChanged: (value) {
-                  updateSortBy(value);
-                },
-              ),
-            ],
-          ),
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Sort by'),
+          children: [
+            RadioListTile(
+              title: const Text('Relevancy'),
+              value: SortBy.relevancy,
+              groupValue: sortBy,
+              onChanged: (value) {
+                updateSortBy(value!);
+              },
+            ),
+            RadioListTile(
+              title: const Text('Popularity'),
+              value: SortBy.popularity,
+              groupValue: sortBy,
+              onChanged: (value) {
+                updateSortBy(value!);
+              },
+            ),
+            RadioListTile(
+              title: const Text('Latest'),
+              value: SortBy.publishedAt,
+              groupValue: sortBy,
+              onChanged: (value) {
+                updateSortBy(value!);
+              },
+            ),
+          ],
         );
       });
 }

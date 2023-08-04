@@ -24,7 +24,7 @@ class SearchResults extends ConsumerWidget {
             IconButton(
               onPressed: () {
                 showDialogBox(context, ref);
-                ref.refresh(searchResultsProvider(query));
+                return ref.refresh(searchResultsProvider(query));
               },
               icon: const Icon(Icons.sort),
             )

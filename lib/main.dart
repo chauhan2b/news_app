@@ -5,6 +5,7 @@ import 'package:news_app/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   // keeps device in portrait mode
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

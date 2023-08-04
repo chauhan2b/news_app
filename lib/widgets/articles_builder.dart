@@ -40,8 +40,6 @@ class ArticlesBuilder extends StatelessWidget {
               final dateTime = DateTime.now().difference(article.publishedAt);
               final articleDate = DateTime.now().subtract(dateTime);
               return InkWell(
-                splashColor: primaryColor.withOpacity(0.1),
-                highlightColor: primaryColor.withOpacity(0.1),
                 onTap: () async {
                   if (!await launchUrl(
                     Uri.parse(article.url),

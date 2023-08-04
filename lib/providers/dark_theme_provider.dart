@@ -6,35 +6,25 @@ import '../constants/constants.dart';
 part 'dark_theme_provider.g.dart';
 
 @riverpod
-class DarkTheme extends _$DarkTheme {
-  Future<bool> _fetchDarkModePreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(darkModePreference) ?? false;
+class DarkThemeService extends _$DarkThemeService {
+  void _loadDarkThemeState() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getBool(darkModePreference) ?? false;
   }
 
-  void _saveDarkModePreference(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  void _saveDarkThemeState(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
     prefs.setBool(darkModePreference, value);
   }
 
   @override
-  Future<bool> build() async {
-    // load user saved theme
-    return _fetchDarkModePreference();
+  bool build() {
+    _loadDarkThemeState();
+    return false;
   }
 
-  Future<void> getDarkMode() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      return _fetchDarkModePreference();
-    });
-  }
-
-  Future<void> setDarkMode(bool value) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      _saveDarkModePreference(value);
-      return _fetchDarkModePreference();
-    });
+  void toggleDarkMode() {
+    state = !state;
+    _saveDarkThemeState(state);
   }
 }

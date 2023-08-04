@@ -11,6 +11,13 @@ final sortByStateProvider = StateProvider<SortBy>((ref) {
 });
 
 // @riverpod
-// SortBy sortByState(SortByStateRef ref) {
-//   return SortBy.publishedAt;
+// class SortByState extends _$SortByState {
+//   @override
+//   SortBy build() {
+//     return SortBy.publishedAt;
+//   }
+
+//   void update(SortBy sortBy) {
+//     state = sortBy;
+//   }
 // }
