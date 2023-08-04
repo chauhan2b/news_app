@@ -22,8 +22,8 @@ class SearchResults extends ConsumerWidget {
           title: const Text('Your results'),
           actions: [
             IconButton(
-              onPressed: () {
-                showDialogBox(context, ref);
+              onPressed: () async {
+                await showDialogBox(context, ref);
                 return ref.refresh(searchResultsProvider(query));
               },
               icon: const Icon(Icons.sort),

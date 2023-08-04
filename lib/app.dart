@@ -24,11 +24,6 @@ class MyApp extends ConsumerWidget {
           splashColor: lightColorScheme?.primary.withOpacity(0.05),
           highlightColor: lightColorScheme?.primary.withOpacity(0.1),
           fontFamily: GoogleFonts.poppins().fontFamily,
-          navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(fontWeight: FontWeight.w500),
-            ),
-          ),
         ),
         darkTheme: ThemeData(
           useMaterial3: true,
@@ -36,11 +31,6 @@ class MyApp extends ConsumerWidget {
           splashColor: darkColorScheme?.primary.withOpacity(0.1),
           highlightColor: darkColorScheme?.primary.withOpacity(0.1),
           fontFamily: GoogleFonts.poppins().fontFamily,
-          navigationBarTheme: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(fontWeight: FontWeight.w500),
-            ),
-          ),
         ),
         themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
         routerConfig: goRouter,

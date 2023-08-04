@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../providers/sort_by_state.dart';
 
-void showDialogBox(BuildContext context, WidgetRef ref) {
+Future<void> showDialogBox(BuildContext context, WidgetRef ref) {
   final sortBy = ref.watch(sortByStateProvider);
 
   void updateSortBy(SortBy value) {
@@ -12,7 +12,7 @@ void showDialogBox(BuildContext context, WidgetRef ref) {
     context.pop();
   }
 
-  showDialog(
+  return showDialog(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(

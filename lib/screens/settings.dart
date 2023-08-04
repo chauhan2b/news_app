@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/providers/dark_theme_provider.dart';
+import 'package:news_app/providers/top_headlines_country.dart';
+import 'package:news_app/widgets/category_dropdown.dart';
 import 'package:news_app/widgets/top_headlines_dropdown.dart';
 
 import '../routing/router.dart';
@@ -12,6 +14,7 @@ class Settings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final darkTheme = ref.watch(darkThemeServiceProvider);
+    final country = ref.watch(countriesStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -43,7 +46,8 @@ class Settings extends ConsumerWidget {
               context.pushNamed(AppRoute.manageSources.name);
             },
           ),
-          const TopHeadlinesDropdown(),
+          TopHeadlinesDropdown(country: country),
+          const CategoryDropdown(),
         ],
       ),
     );

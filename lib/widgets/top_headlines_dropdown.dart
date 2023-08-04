@@ -3,37 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/top_headlines_country.dart';
 
-class TopHeadlinesDropdown extends ConsumerStatefulWidget {
+class TopHeadlinesDropdown extends ConsumerWidget {
   const TopHeadlinesDropdown({
     super.key,
+    required this.country,
   });
 
-  @override
-  ConsumerState<TopHeadlinesDropdown> createState() =>
-      _TopHeadlinesDropdownState();
-}
-
-class _TopHeadlinesDropdownState extends ConsumerState<TopHeadlinesDropdown> {
-  String dropDownValue = 'AUS';
+  final String country;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final countries = ref.watch(countriesProvider);
     return ListTile(
       leading: const Icon(Icons.language),
       title: const Text('Top headlines'),
       trailing: DropdownButton(
-        value: dropDownValue,
+        value: country,
         icon: const Icon(Icons.keyboard_arrow_down),
         onChanged: (val) {
-          setState(() {
-            dropDownValue = val!;
-          });
+          ref.read(countriesStateProvider.notifier).update(val!);
         },
         items: countries.map((String val) {
           return DropdownMenuItem(
             value: val,
-            child: Text(val),
+            child: Text(val.toUpperCase()),
           );
         }).toList(),
       ),

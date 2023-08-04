@@ -103,6 +103,15 @@ class _MyFeedState extends ConsumerState<MyFeed> {
               hideKeyboard();
             }
           });
+
+          final pixels = notification.metrics.pixels;
+          const threshold = 200;
+          setState(() {
+            if (pixels < threshold) {
+              showFab = false;
+            }
+          });
+
           return true;
         },
         child: RefreshIndicator(

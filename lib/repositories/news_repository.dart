@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:news_app/providers/sort_by_state.dart';
+import 'package:news_app/providers/top_headlines_country.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../config/config.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/news.dart';
+import '../providers/category_provider.dart';
 import '../providers/domains_state.dart';
 
 part 'news_repository.g.dart';
@@ -73,7 +75,9 @@ class NewsRepository {
     }
   }
 
-  Future<List<News>> fetchTopHeadlines() async {
+  Future<List<News>> fetchTopHeadlines(String country, String category) async {
+    print(country);
+    print(category);
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
@@ -81,8 +85,9 @@ class NewsRepository {
       path: 'v2/top-headlines',
       queryParameters: {
         'apiKey': Config.apiKey,
-        'country': 'us',
+        'country': country,
         'pageSize': '30',
+        'category': category,
       },
     );
 
@@ -117,10 +122,13 @@ FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) async {
 @riverpod
 FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
   final sortBy = ref.read(sortByStateProvider);
+  print(sortBy);
   return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy);
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref) {
-  return ref.read(newsRepositoryProvider).fetchTopHeadlines();
+FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref) async {
+  String country = await ref.read(countriesStateProvider.notifier).get();
+  String category = await ref.read(categoryStateProvider.notifier).get();
+  return ref.read(newsRepositoryProvider).fetchTopHeadlines(country, category);
 }
