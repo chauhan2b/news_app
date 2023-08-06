@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:news_app/providers/sort_by_state.dart';
-import 'package:news_app/providers/top_headlines_country.dart';
+import 'package:news_app/providers/country_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../config/config.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/news.dart';
-import '../providers/category_provider.dart';
+import '../providers/category_state.dart';
 import '../providers/domains_state.dart';
 
 part 'news_repository.g.dart';
@@ -30,6 +30,12 @@ class NewsRepository {
     );
 
     try {
+      // check if domains are empty
+      if (domains.isEmpty) {
+        throw ('Nothing to display!\nTry adding at least one source.');
+      }
+
+      // fetch news articles
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
@@ -76,8 +82,6 @@ class NewsRepository {
   }
 
   Future<List<News>> fetchTopHeadlines(String country, String category) async {
-    print(country);
-    print(category);
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
@@ -122,7 +126,6 @@ FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) async {
 @riverpod
 FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
   final sortBy = ref.read(sortByStateProvider);
-  print(sortBy);
   return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy);
 }
 

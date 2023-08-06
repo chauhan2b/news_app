@@ -34,6 +34,15 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
               showFab = true;
             }
           });
+
+          final pixels = notification.metrics.pixels;
+          const threshold = 200;
+          setState(() {
+            if (pixels < threshold) {
+              showFab = false;
+            }
+          });
+
           return true;
         },
         child: RefreshIndicator(

@@ -5,19 +5,6 @@ import 'package:news_app/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // makes flutter draw behind system navigation bar
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: true,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark));
-
-  // Setting SystemUIMode
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
-      overlays: [SystemUiOverlay.top]);
-
   // keeps device in portrait mode
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

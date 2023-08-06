@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'category_provider.g.dart';
+part 'category_state.g.dart';
 
 enum Category {
   business,

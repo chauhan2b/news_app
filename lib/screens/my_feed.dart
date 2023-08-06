@@ -136,7 +136,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                       ),
                       child: Center(
                         child: Text(
-                          '$error\nHINT: Try adding some sources',
+                          error.toString(),
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -1,17 +1,13 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'top_headlines_country.g.dart';
+part 'country_state.g.dart';
 
 List<String> _countries = [
   'in',
   'jp',
   'us',
 ];
-
-// final countriesProvider = Provider<List<String>>((ref) {
-//   return _countries;
-// });
 
 @riverpod
 List<String> countries(CountriesRef ref) {

@@ -3,10 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
 
-part 'dark_theme_provider.g.dart';
+part 'dark_theme_state.g.dart';
 
 @riverpod
-class DarkThemeService extends _$DarkThemeService {
+class DarkThemeState extends _$DarkThemeState {
   void _loadDarkThemeState() async {
     final prefs = await SharedPreferences.getInstance();
     state = prefs.getBool(darkModePreference) ?? false;

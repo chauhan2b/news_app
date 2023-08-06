@@ -1,4 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'sort_by_state.g.dart';
 
 enum SortBy {
   relevancy,
@@ -6,18 +8,14 @@ enum SortBy {
   publishedAt,
 }
 
-final sortByStateProvider = StateProvider<SortBy>((ref) {
-  return SortBy.publishedAt;
-});
+@Riverpod(keepAlive: true)
+class SortByState extends _$SortByState {
+  @override
+  SortBy build() {
+    return SortBy.publishedAt;
+  }
 
-// @riverpod
-// class SortByState extends _$SortByState {
-//   @override
-//   SortBy build() {
-//     return SortBy.publishedAt;
-//   }
-
-//   void update(SortBy sortBy) {
-//     state = sortBy;
-//   }
-// }
+  void update(SortBy sortBy) {
+    state = sortBy;
+  }
+}
