@@ -37,7 +37,6 @@ class _MyFeedState extends ConsumerState<MyFeed> {
   @override
   Widget build(BuildContext context) {
     final futureNews = ref.watch(newsListFutureProvider);
-
     final scrollController = ScrollController();
     const pageKey = ValueKey('my-feed');
     const duration = Duration(milliseconds: 300);
@@ -62,17 +61,14 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                   hintText: 'Search articles',
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: InkWell(
-                      borderRadius: BorderRadius.circular(30),
-                      onTap: () {
-                        controller.clear();
-                      },
-                      child: const Icon(Icons.close)),
-                  // suffix: IconButton(
-                  //   icon: const Icon(Icons.close),
-                  //   onPressed: () {
-                  //     hideKeyboard();
-                  //   },
-                  // ),
+                    borderRadius: BorderRadius.circular(30),
+                    onTap: () {
+                      controller.text == ''
+                          ? hideKeyboard()
+                          : controller.clear();
+                    },
+                    child: const Icon(Icons.close),
+                  ),
                   border: InputBorder.none,
                 ),
               )
@@ -92,17 +88,23 @@ class _MyFeedState extends ConsumerState<MyFeed> {
       ),
       body: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
+          // hide fab when scrolling down and show when scrolling up
           final ScrollDirection direction = notification.direction;
           setState(() {
             if (direction == ScrollDirection.reverse) {
               showFab = false;
-              hideKeyboard();
+              if (isTyping) {
+                hideKeyboard();
+              }
             } else if (direction == ScrollDirection.forward) {
               showFab = true;
-              hideKeyboard();
+              if (isTyping) {
+                hideKeyboard();
+              }
             }
           });
 
+          // if at start of list, hide fab
           final pixels = notification.metrics.pixels;
           const threshold = 200;
           setState(() {
