@@ -15,7 +15,7 @@ This Flutter project aims to provide users with a seamless experience to read ar
 - Material You support, bringing Android 12 design language and customization options
 
 ## Installation
-To run this News Application on your device, follow these steps:
+To run this News App on your device, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Ensure you have Flutter installed. If not, follow the official installation guide: [Flutter Install](https://flutter.dev/docs/get-started/install)
@@ -42,18 +42,8 @@ To add domains of your interest, follow these steps:
 ### Searching Articles
 To search for articles, use the search bar on the top of the home screen. Enter your search query and press enter to see relevant articles. You can also sort the search results by date, relevancy, or popularity.
 
-## Supported Platforms
-Our News Application supports the following platforms:
-- Android
-- iOS
-
-## Dark Theme
-To enable the Dark Theme, follow these steps:
-1. Open the settings page from the app's menu.
-2. Toggle the switch to enable Dark Theme.
-
 ## Material You Support
-Our News Application embraces the Material You design language introduced in Android 12. It allows the app's appearance to be customized based on system-wide themes and color schemes, providing a more personalized user experience.
+This app embraces the Material You design language introduced in Android 12. It allows the app's appearance to be customized based on system-wide themes and color schemes, providing a more personalized user experience.
 
 ## Contributing
-We welcome contributions to enhance the News Application. If you find any bugs, have suggestions for new features, or would like to improve the code, please feel free to open an issue or submit a pull request.
+Contributions are welcome. If you find any bugs, have suggestions for new features, or would like to improve the code, please feel free to open an issue or submit a pull request.

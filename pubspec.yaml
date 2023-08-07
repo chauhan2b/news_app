@@ -1,5 +1,5 @@
 name: news_app
-description: A new Flutter project.
+description: A simple app which fetches news articles from user's provided domains.
 publish_to: 'none'
 version: 1.0.0
 
