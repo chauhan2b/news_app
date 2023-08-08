@@ -10,25 +10,47 @@ This Flutter project aims to provide users with a seamless experience to read ar
 - View articles from user-added domains
 - Explore top headlines by countries and categories
 - Powerful search feature to find specific articles
-- Sort articles by date, relevancy, or popularity
+- Sort searched articles by date, relevancy, or popularity
 - Dark theme support for comfortable reading in low-light conditions
 - Material You support, bringing Android 12 design language and customization options
 
-## Installation
-To run this News App on your device, follow these steps:
+## Screenshots
 
-1. Clone the repository to your local machine.
-2. Ensure you have Flutter installed. If not, follow the official installation guide: [Flutter Install](https://flutter.dev/docs/get-started/install)
-3. Connect your device or use an emulator.
-4. Open the terminal in the project directory and run:
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="screenshots/news_light.png" alt="Screenshot 1" style="width: 35%; height: 35%; margin-right: 20px;">
 
-```shell
-flutter pub get
-dart run build_runner watch -d
-flutter run
-```
+  <img src="screenshots/news_dark.png" alt="Screenshot 2" style="width:35%; height: 35%;">
+</div>
 
-5. The application should now be running on your device.
+## Getting Started
+
+### Prerequisites
+
+- Flutter SDK: [Installation Guide](https://flutter.dev/docs/get-started/install)
+
+### Installation
+
+1. Clone the repository:
+
+    ```shell
+    git clone https://github.com/Endeavor36/news_app.git
+
+2. Navigate to the project directory:
+
+    ```shell
+    cd news_app
+
+3. Install the dependencies:
+
+    ```shell
+    flutter pub get
+
+4. Generate the providers using riverpod generator
+
+    ```shell
+    dart run build_runner watch -d
+
+5. Before running, you will have to add your own api key. Get your API key from [here](https://newsapi.org/).
 
 ## Usage
 Upon launching the application, you will be presented with the feed screen, you will have to add some sources first to view articles. Clicking on any article will open it in your default web browser.
@@ -44,6 +66,9 @@ To search for articles, use the search bar on the top of the home screen. Enter 
 
 ## Material You Support
 This app embraces the Material You design language introduced in Android 12. It allows the app's appearance to be customized based on system-wide themes and color schemes, providing a more personalized user experience.
+
+## Which domains to add?
+Not every domain will work. Only supported domains work. Any domain you see in top headlines or search will work. So add it in 'My sources' and refresh your feed.
 
 ## Contributing
 Contributions are welcome. If you find any bugs, have suggestions for new features, or would like to improve the code, please feel free to open an issue or submit a pull request.
