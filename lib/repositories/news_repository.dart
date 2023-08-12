@@ -118,20 +118,22 @@ NewsRepository newsRepository(NewsRepositoryRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) async {
-  final domains = await ref.read(domainsProvider.notifier).get();
+FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) {
+  final domains = ref.watch(domainsProvider);
   return ref.read(newsRepositoryProvider).fetchNews(domains);
 }
 
 @riverpod
 FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
-  final sortBy = ref.read(sortByStateProvider);
+  final sortBy = ref.watch(sortByStateProvider);
   return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy);
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref) async {
-  String country = await ref.read(countriesStateProvider.notifier).get();
-  String category = await ref.read(categoryStateProvider.notifier).get();
-  return ref.read(newsRepositoryProvider).fetchTopHeadlines(country, category);
+FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref) {
+  final country = ref.watch(countriesStateProvider);
+  final category = ref.watch(categoryStateProvider);
+  return ref
+      .read(newsRepositoryProvider)
+      .fetchTopHeadlines(country, category.name);
 }

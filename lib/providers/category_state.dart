@@ -13,7 +13,7 @@ enum Category {
   technology,
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class CategoryState extends _$CategoryState {
   void _loadCategory() async {
     final prefs = await SharedPreferences.getInstance();
@@ -37,10 +37,5 @@ class CategoryState extends _$CategoryState {
   void update(Category category) {
     state = category;
     _saveCategory(category);
-  }
-
-  Future<String> get() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return state.name;
   }
 }

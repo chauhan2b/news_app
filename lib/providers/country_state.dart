@@ -14,7 +14,7 @@ List<String> countries(CountriesRef ref) {
   return _countries;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class CountriesState extends _$CountriesState {
   void _saveCountryPreference(String value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -35,10 +35,5 @@ class CountriesState extends _$CountriesState {
   void update(String country) {
     state = country;
     _saveCountryPreference(state);
-  }
-
-  Future<String> get() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return state;
   }
 }

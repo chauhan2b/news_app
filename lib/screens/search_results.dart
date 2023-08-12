@@ -18,26 +18,26 @@ class SearchResults extends ConsumerWidget {
     final scrollController = ScrollController();
     const pageKey = ValueKey('search-results');
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Your results'),
-          actions: [
-            IconButton(
-              onPressed: () async {
-                await showDialogBox(context, ref);
-                return ref.refresh(searchResultsProvider(query));
-              },
-              icon: const Icon(Icons.sort),
-            )
-          ],
+      appBar: AppBar(
+        title: const Text('Your results'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showDialogBox(context, ref);
+            },
+            icon: const Icon(Icons.sort),
+          )
+        ],
+      ),
+      body: results.when(
+        data: (news) => ArticlesBuilder(
+          articles: news,
+          controller: scrollController,
+          pageKey: pageKey,
         ),
-        body: results.when(
-          data: (news) => ArticlesBuilder(
-            articles: news,
-            controller: scrollController,
-            pageKey: pageKey,
-          ),
-          error: (error, stackTrace) => Center(child: Text(error.toString())),
-          loading: () => const Center(child: CircularProgressIndicator()),
-        ));
+        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
+    );
   }
 }

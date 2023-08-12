@@ -21,7 +21,7 @@ final newsRepositoryProvider = AutoDisposeProvider<NewsRepository>.internal(
 );
 
 typedef NewsRepositoryRef = AutoDisposeProviderRef<NewsRepository>;
-String _$newsListFutureHash() => r'f2fdd3498f5936a5a08316c3f44cb5c78b771c22';
+String _$newsListFutureHash() => r'f9a40f1097331ad6507c1f9ebd392c63274bac9f';
 
 /// See also [newsListFuture].
 @ProviderFor(newsListFuture)
@@ -36,7 +36,7 @@ final newsListFutureProvider = FutureProvider<List<News>>.internal(
 );
 
 typedef NewsListFutureRef = FutureProviderRef<List<News>>;
-String _$searchResultsHash() => r'41351bbfaa9cd89e7ed090911be0ce1fb9f35d6a';
+String _$searchResultsHash() => r'91d4aac7962b09749434d059999f6ad25cd3e115';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -141,7 +141,7 @@ class SearchResultsProvider extends AutoDisposeFutureProvider<List<News>> {
 }
 
 String _$topHeadlinesFutureHash() =>
-    r'67ff44ed27a50f535ebf6811d025769089ea2531';
+    r'1cd402eafc23c252082e7f1f599dd0a9d79156bd';
 
 /// See also [topHeadlinesFuture].
 @ProviderFor(topHeadlinesFuture)
