@@ -35,7 +35,11 @@ class SearchResults extends ConsumerWidget {
           controller: scrollController,
           pageKey: pageKey,
         ),
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        error: (error, stackTrace) => Center(
+            child: Text(
+          error.toString(),
+          textAlign: TextAlign.center,
+        )),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );

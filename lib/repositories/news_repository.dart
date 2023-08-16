@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:news_app/providers/sort_by_state.dart';
 import 'package:news_app/providers/country_state.dart';
@@ -46,6 +47,8 @@ class NewsRepository {
       } else {
         throw 'Error fetching news articles';
       }
+    } on SocketException {
+      throw ('Unable to fetch your feed. Check your internet connection and try again!');
     } catch (e) {
       rethrow;
     }
@@ -76,6 +79,8 @@ class NewsRepository {
       } else {
         throw 'Error fetching news articles';
       }
+    } on SocketException {
+      throw ('Unable to fetch articles. Check your internet connection and try again!');
     } catch (e) {
       rethrow;
     }
@@ -106,6 +111,8 @@ class NewsRepository {
       } else {
         throw 'Error fetching news articles';
       }
+    } on SocketException {
+      throw ('Unable to fetch headlines. Check your internet connection and try again!');
     } catch (e) {
       rethrow;
     }
