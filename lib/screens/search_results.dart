@@ -36,9 +36,12 @@ class SearchResults extends ConsumerWidget {
           pageKey: pageKey,
         ),
         error: (error, stackTrace) => Center(
-            child: Text(
-          error.toString(),
-          textAlign: TextAlign.center,
+            child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            error.toString(),
+            textAlign: TextAlign.center,
+          ),
         )),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),

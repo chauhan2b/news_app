@@ -35,7 +35,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             name: AppRoute.searchResults.name,
             path: 'search-results',
             builder: (context, state) {
-              final query = state.queryParameters['query'] ?? '';
+              final query = state.uri.queryParameters['query'] ?? '';
               return SearchResults(query: query);
             },
           ),
