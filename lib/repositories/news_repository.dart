@@ -95,7 +95,7 @@ class NewsRepository {
       queryParameters: {
         'apiKey': Config.apiKey,
         'country': country,
-        'pageSize': '30',
+        'pageSize': '100',
         'category': category,
       },
     );
