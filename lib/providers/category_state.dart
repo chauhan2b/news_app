@@ -1,3 +1,4 @@
+import 'package:news_app/constants/constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +18,7 @@ enum Category {
 class CategoryState extends _$CategoryState {
   void _loadCategory() async {
     final prefs = await SharedPreferences.getInstance();
-    final category = prefs.getString('category') ?? 'entertainment';
+    final category = prefs.getString(userCategory) ?? 'entertainment';
     state = Category.values
         .where((element) => element.toString().split('.').last == category)
         .first;
@@ -25,7 +26,7 @@ class CategoryState extends _$CategoryState {
 
   void _saveCategory(Category value) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('category', value.name);
+    prefs.setString(userCategory, value.name);
   }
 
   @override

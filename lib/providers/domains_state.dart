@@ -1,3 +1,4 @@
+import 'package:news_app/constants/constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,12 +8,12 @@ part 'domains_state.g.dart';
 class Domains extends _$Domains {
   void _load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    state = prefs.getStringList('domains') ?? [];
+    state = prefs.getStringList(userDomains) ?? [];
   }
 
   void _save() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('domains', state);
+    prefs.setStringList(userDomains, state);
   }
 
   @override

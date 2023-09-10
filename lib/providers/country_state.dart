@@ -1,3 +1,4 @@
+import 'package:news_app/constants/constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,12 +19,12 @@ List<String> countries(CountriesRef ref) {
 class CountriesState extends _$CountriesState {
   void _saveCountryPreference(String value) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('country', value);
+    prefs.setString(userCountry, value);
   }
 
   void _loadCountryPreference() async {
     final prefs = await SharedPreferences.getInstance();
-    state = prefs.getString('country') ?? _countries[0];
+    state = prefs.getString(userCountry) ?? _countries[0];
   }
 
   @override
