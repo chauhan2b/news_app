@@ -33,23 +33,31 @@ class ManageSources extends ConsumerWidget {
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: domains.length,
-              (context, index) => ListTile(
-                title: Text(domains[index]),
-                trailing: IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    size: 18.0,
+          domains.isEmpty
+              ? const SliverToBoxAdapter(
+                  child: Center(
+                    child: Text('No sources found'),
                   ),
-                  onPressed: () {
-                    ref.read(domainsProvider.notifier).remove(domains[index]);
-                  },
+                )
+              : SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: domains.length,
+                    (context, index) => ListTile(
+                      title: Text(domains[index]),
+                      trailing: IconButton(
+                        icon: const Icon(
+                          Icons.close,
+                          size: 18.0,
+                        ),
+                        onPressed: () {
+                          ref
+                              .read(domainsProvider.notifier)
+                              .remove(domains[index]);
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );
