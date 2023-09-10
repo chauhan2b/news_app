@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/category_state.dart';
+import '../../../providers/category_state.dart';
 
 class CategoryDropdown extends ConsumerWidget {
   const CategoryDropdown({

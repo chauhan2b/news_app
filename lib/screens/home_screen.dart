@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/settings.dart';
-import 'package:news_app/screens/top_headlines.dart';
+import 'package:news_app/screens/settings/settings.dart';
+import 'package:news_app/screens/headlines/top_headlines.dart';
 
-import 'my_feed.dart';
+import 'feed/my_feed.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

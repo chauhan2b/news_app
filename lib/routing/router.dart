@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_app/screens/manage_sources.dart';
-import 'package:news_app/screens/my_feed.dart';
-import 'package:news_app/screens/search_results.dart';
-import 'package:news_app/screens/settings.dart';
-import 'package:news_app/screens/top_headlines.dart';
+import 'package:news_app/screens/settings/manage_sources.dart';
+import 'package:news_app/screens/feed/my_feed.dart';
+import 'package:news_app/screens/feed/search_results.dart';
+import 'package:news_app/screens/settings/settings.dart';
+import 'package:news_app/screens/headlines/top_headlines.dart';
 
 import '../screens/home_screen.dart';
 

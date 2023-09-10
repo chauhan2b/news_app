@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/providers/dark_theme_state.dart';
 import 'package:news_app/providers/country_state.dart';
-import 'package:news_app/widgets/category_dropdown.dart';
-import 'package:news_app/widgets/top_headlines_dropdown.dart';
+import 'package:news_app/screens/settings/widgets/category_dropdown.dart';
+import 'package:news_app/screens/settings/widgets/top_headlines_dropdown.dart';
 
-import '../routing/router.dart';
+import '../../routing/router.dart';
 
 class Settings extends ConsumerWidget {
   const Settings({super.key});

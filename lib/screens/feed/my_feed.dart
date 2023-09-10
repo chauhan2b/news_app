@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:news_app/repositories/news_repository.dart';
 import 'package:news_app/routing/router.dart';
 
-import '../widgets/articles_builder.dart';
+import '../../common/articles_builder.dart';
 
 class MyFeed extends ConsumerStatefulWidget {
   const MyFeed({super.key});

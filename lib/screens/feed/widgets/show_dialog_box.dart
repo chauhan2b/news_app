@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../providers/sort_by_state.dart';
+import '../../../providers/sort_by_state.dart';
 
 Future<void> showDialogBox(BuildContext context, WidgetRef ref) {
   final sortBy = ref.watch(sortByStateProvider);

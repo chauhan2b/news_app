@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/repositories/news_repository.dart';
-import 'package:news_app/widgets/articles_builder.dart';
+import 'package:news_app/common/articles_builder.dart';
 
 class TopHeadlines extends ConsumerStatefulWidget {
   const TopHeadlines({super.key});

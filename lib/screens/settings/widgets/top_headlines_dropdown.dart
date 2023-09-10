@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/country_state.dart';
+import '../../../providers/country_state.dart';
 
 class TopHeadlinesDropdown extends ConsumerWidget {
   const TopHeadlinesDropdown({

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/repositories/news_repository.dart';
-import 'package:news_app/widgets/show_dialog_box.dart';
+import 'package:news_app/screens/feed/widgets/show_dialog_box.dart';
 
-import '../widgets/articles_builder.dart';
+import '../../common/articles_builder.dart';
 
 class SearchResults extends ConsumerWidget {
   const SearchResults({
