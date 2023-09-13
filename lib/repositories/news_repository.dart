@@ -16,7 +16,7 @@ import '../providers/domains_state.dart';
 part 'news_repository.g.dart';
 
 class NewsRepository {
-  Future<List<News>> fetchNews(List<String> domains) async {
+  Future<List<News>> fetchNews(List<String> domains, int page) async {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
@@ -28,6 +28,8 @@ class NewsRepository {
         'domains': domains.join(','),
         'sortBy': 'publishedAt',
         'language': 'en',
+        'pageSize': pageSize.toString(),
+        'page': page.toString(),
       },
     );
 
@@ -128,9 +130,10 @@ NewsRepository newsRepository(NewsRepositoryRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) {
+FutureOr<List<News>> newsListFuture(NewsListFutureRef ref,
+    {required int page}) {
   final domains = ref.watch(domainsProvider);
-  return ref.read(newsRepositoryProvider).fetchNews(domains);
+  return ref.read(newsRepositoryProvider).fetchNews(domains, page);
 }
 
 @Riverpod(keepAlive: true)

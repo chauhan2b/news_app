@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/common/article_card.dart';
+import 'package:news_app/common/article_loading_shimmer.dart';
 import 'package:news_app/constants/constants.dart';
 import 'package:news_app/repositories/news_repository.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TopHeadlines extends ConsumerStatefulWidget {
   const TopHeadlines({super.key});
@@ -17,9 +17,6 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
   bool showFab = false;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    Color primaryColor = Theme.of(context).colorScheme.primary;
-
     final scrollController = ScrollController();
     const pageKey = ValueKey('top-headlines');
     const duration = Duration(milliseconds: 300);
@@ -30,6 +27,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
       ),
       body: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
+          // hide fab when scrolling down and show when scrolling up
           final ScrollDirection direction = notification.direction;
           setState(() {
             if (direction == ScrollDirection.reverse) {
@@ -39,6 +37,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
             }
           });
 
+          // if at start of list, hide fab
           final pixels = notification.metrics.pixels;
           const threshold = 200;
           setState(() {
@@ -101,61 +100,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
                     },
                   ),
                   loading: () {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: Shimmer.fromColors(
-                        baseColor: primaryColor.withOpacity(0.05),
-                        highlightColor: primaryColor.withOpacity(0.2),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: size.height * 0.24,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Container(
-                              height: 24,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  height: 24,
-                                  width: 160,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                ),
-                                const Spacer(),
-                                Container(
-                                  height: 24,
-                                  width: 24,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    );
+                    return const ArticleLoadingShimmer();
                   },
                 );
               },

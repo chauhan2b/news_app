@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/common/article_card.dart';
+import 'package:news_app/common/article_loading_shimmer.dart';
+import 'package:news_app/constants/constants.dart';
 import 'package:news_app/repositories/news_repository.dart';
 import 'package:news_app/routing/router.dart';
 
@@ -36,7 +39,6 @@ class _MyFeedState extends ConsumerState<MyFeed> {
 
   @override
   Widget build(BuildContext context) {
-    final futureNews = ref.watch(newsListFutureProvider);
     final scrollController = ScrollController();
     const pageKey = ValueKey('my-feed');
     const duration = Duration(milliseconds: 300);
@@ -118,35 +120,59 @@ class _MyFeedState extends ConsumerState<MyFeed> {
         child: RefreshIndicator(
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 1));
-            return ref.refresh(newsListFutureProvider);
+            return ref.refresh(newsListFutureProvider(page: 1));
           },
-          child: futureNews.when(
-            data: (news) => ArticlesBuilder(
-              articles: news,
-              controller: scrollController,
-              pageKey: pageKey,
-            ),
-            error: (error, stackTrace) => LayoutBuilder(
-              builder: (context, constraints) {
-                return ListView(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
-                      ),
-                      child: Center(
-                        child: Text(
-                          error.toString(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
+          child: ListView.custom(
+            key: pageKey,
+            controller: scrollController,
+            childrenDelegate: SliverChildBuilderDelegate(
+              (context, index) {
+                // when index exceeds pageSize, page will increase by 1
+                final page = index ~/ pageSize + 1;
+                final indexInPage = index % pageSize;
+
+                final articles = ref.watch(newsListFutureProvider(page: page));
+
+                return articles.when(
+                  data: (articles) {
+                    if (indexInPage >= articles.length) {
+                      return null;
+                    }
+
+                    final article = articles[indexInPage];
+                    return Column(
+                      children: [
+                        ArticleCard(article: article),
+                        const Divider(indent: 12.0, endIndent: 12.0),
+                      ],
+                    );
+                  },
+                  error: (error, stackTrace) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return ListView(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(20.0),
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
+                            ),
+                            child: Center(
+                              child: Text(
+                                error.toString(),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  loading: () {
+                    return const ArticleLoadingShimmer();
+                  },
                 );
               },
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
           ),
         ),
       ),
