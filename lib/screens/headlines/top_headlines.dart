@@ -59,6 +59,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
             controller: scrollController,
             childrenDelegate: SliverChildBuilderDelegate(
               (context, index) {
+                // when index exceeds pageSize, page will increase by 1
                 final page = index ~/ pageSize + 1;
                 final indexInPage = index % pageSize;
 
