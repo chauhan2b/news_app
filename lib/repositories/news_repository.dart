@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:news_app/constants/constants.dart';
 import 'package:news_app/providers/sort_by_state.dart';
 import 'package:news_app/providers/country_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -86,7 +87,8 @@ class NewsRepository {
     }
   }
 
-  Future<List<News>> fetchTopHeadlines(String country, String category) async {
+  Future<List<News>> fetchTopHeadlines(
+      String country, String category, int page) async {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
@@ -95,7 +97,8 @@ class NewsRepository {
       queryParameters: {
         'apiKey': Config.apiKey,
         'country': country,
-        'pageSize': '100',
+        'pageSize': pageSize.toString(),
+        'page': page.toString(),
         'category': category,
       },
     );
@@ -137,10 +140,11 @@ FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref) {
+FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
+    {required int page}) {
   final country = ref.watch(countriesStateProvider);
   final category = ref.watch(categoryStateProvider);
   return ref
       .read(newsRepositoryProvider)
-      .fetchTopHeadlines(country, category.name);
+      .fetchTopHeadlines(country, category.name, page);
 }
