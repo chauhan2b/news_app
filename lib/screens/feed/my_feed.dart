@@ -8,8 +8,6 @@ import 'package:news_app/constants/constants.dart';
 import 'package:news_app/repositories/news_repository.dart';
 import 'package:news_app/routing/router.dart';
 
-import '../../common/articles_builder.dart';
-
 class MyFeed extends ConsumerStatefulWidget {
   const MyFeed({super.key});
 
@@ -125,6 +123,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
           child: ListView.custom(
             key: pageKey,
             controller: scrollController,
+            // semanticChildCount: 99,
             childrenDelegate: SliverChildBuilderDelegate(
               (context, index) {
                 // when index exceeds pageSize, page will increase by 1
@@ -135,7 +134,9 @@ class _MyFeedState extends ConsumerState<MyFeed> {
 
                 return articles.when(
                   data: (articles) {
-                    if (indexInPage >= articles.length) {
+                    // free api is limited to 100 articles, so infinite loading will not work
+                    // remove page > 2 when api supports infinite loading
+                    if (page > 2 || indexInPage >= articles.length) {
                       return null;
                     }
 
@@ -147,26 +148,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                       ],
                     );
                   },
-                  error: (error, stackTrace) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return ListView(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            constraints: BoxConstraints(
-                              minHeight: constraints.maxHeight,
-                            ),
-                            child: Center(
-                              child: Text(
-                                error.toString(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                  error: (error, stackTrace) => const Text('error'),
                   loading: () {
                     return const ArticleLoadingShimmer();
                   },
