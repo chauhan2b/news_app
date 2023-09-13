@@ -133,12 +133,6 @@ FutureOr<List<News>> newsListFuture(NewsListFutureRef ref) {
   return ref.read(newsRepositoryProvider).fetchNews(domains);
 }
 
-@riverpod
-FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
-  final sortBy = ref.watch(sortByStateProvider);
-  return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy);
-}
-
 @Riverpod(keepAlive: true)
 FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
     {required int page}) {
@@ -147,4 +141,10 @@ FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
   return ref
       .read(newsRepositoryProvider)
       .fetchTopHeadlines(country, category.name, page);
+}
+
+@riverpod
+FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
+  final sortBy = ref.watch(sortByStateProvider);
+  return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy);
 }
