@@ -27,6 +27,7 @@ class MyApp extends ConsumerWidget {
         ),
         darkTheme: ThemeData(
           useMaterial3: true,
+          brightness: Brightness.dark,
           colorScheme: darkColorScheme,
           splashColor: darkColorScheme?.primary.withOpacity(0.1),
           highlightColor: darkColorScheme?.primary.withOpacity(0.1),
