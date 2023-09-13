@@ -21,7 +21,7 @@ class Settings extends ConsumerWidget {
         title: const Text('Settings'),
       ),
       body: ListView(
-        // physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           ListTile(
             leading: darkTheme
