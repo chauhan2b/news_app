@@ -57,7 +57,8 @@ class NewsRepository {
     }
   }
 
-  Future<List<News>> fetchNewsByQuery(String query, SortBy sortBy) async {
+  Future<List<News>> fetchNewsByQuery(
+      String query, SortBy sortBy, int page) async {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
@@ -68,6 +69,8 @@ class NewsRepository {
         'q': query,
         'sortBy': sortBy.name,
         'language': 'en',
+        'page': page.toString(),
+        'pageSize': pageSize.toString(),
       },
     );
 
@@ -147,7 +150,8 @@ FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
 }
 
 @riverpod
-FutureOr<List<News>> searchResults(SearchResultsRef ref, String query) {
+FutureOr<List<News>> searchResults(SearchResultsRef ref,
+    {required String query, required int page}) {
   final sortBy = ref.watch(sortByStateProvider);
-  return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy);
+  return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy, page);
 }

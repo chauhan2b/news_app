@@ -106,12 +106,13 @@ class ArticlesBuilder extends StatelessWidget {
                       // const SizedBox(height: 6.0),
                       Row(
                         children: [
-                          Text(
-                            '${article.source} | ${timeago.format(articleDate, locale: 'en_short')}',
-                            maxLines: 1,
-                            overflow: TextOverflow.fade,
+                          Expanded(
+                            child: Text(
+                              '${article.source} | ${timeago.format(articleDate, locale: 'en_short')}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          const Spacer(),
                           IconButton(
                             padding: EdgeInsets.zero,
                             icon: const Icon(Icons.share_outlined),
