@@ -5,6 +5,8 @@
 
 This Flutter project aims to provide users with a seamless experience to read articles from various domains of your choice. You can add their preferred domains and view articles specifically from those sources. Additionally, the application showcases top headlines by countries and categories, allowing users to stay up-to-date with the latest news globally. The app also offers a powerful search functionality, enabling users to search for any article and sort them by date, relevancy, or popularity.
 
+This project is created using [News API](https://newsapi.org/).
+
 ## Features
 - View articles from user-added domains
 - Explore top headlines by countries and categories
