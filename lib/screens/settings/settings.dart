@@ -5,7 +5,6 @@ import 'package:news_app/providers/dark_theme_state.dart';
 import 'package:news_app/providers/country_state.dart';
 import 'package:news_app/screens/settings/widgets/category_dropdown.dart';
 import 'package:news_app/screens/settings/widgets/top_headlines_dropdown.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../routing/router.dart';
 
