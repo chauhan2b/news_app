@@ -51,7 +51,7 @@ This project is created using [News API](https://newsapi.org/).
     ```shell
     dart run build_runner watch -d
 
-5. Before running, you will have to add your own api key. Get your API key from [here](https://newsapi.org/).
+5. Before running, you will have to add your own api key. Get your API key from [here](https://newsapi.org/register/).
 
 ## Usage
 Upon launching the application, you will be presented with the feed screen, you will have to add some sources first to view articles. Clicking on any article will open it in your default web browser.
