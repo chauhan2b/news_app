@@ -16,6 +16,8 @@ import '../providers/domains_state.dart';
 part 'news_repository.g.dart';
 
 class NewsRepository {
+  final String apiKey = Config.newsApiKey;
+
   Future<List<News>> fetchNews(List<String> domains, int page) async {
     // generating url with parameters
     final url = Uri(
@@ -23,7 +25,7 @@ class NewsRepository {
       host: 'newsapi.org',
       path: 'v2/everything',
       queryParameters: {
-        'apiKey': Config.apiKey,
+        'apiKey': apiKey,
         'q': '',
         'domains': domains.join(','),
         'sortBy': 'publishedAt',
@@ -65,7 +67,7 @@ class NewsRepository {
       host: 'newsapi.org',
       path: 'v2/everything',
       queryParameters: {
-        'apiKey': Config.apiKey,
+        'apiKey': apiKey,
         'q': query,
         'sortBy': sortBy.name,
         'language': 'en',
@@ -100,7 +102,7 @@ class NewsRepository {
       host: 'newsapi.org',
       path: 'v2/top-headlines',
       queryParameters: {
-        'apiKey': Config.apiKey,
+        'apiKey': apiKey,
         'country': country,
         'pageSize': pageSize.toString(),
         'page': page.toString(),
