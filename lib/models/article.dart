@@ -5,6 +5,7 @@ class Article {
   final String author;
   final String publishedDate;
   final String link;
+  final String cleanUrl;
   final String excerpt;
   final String summary;
   final String topic;
@@ -15,6 +16,7 @@ class Article {
     required this.author,
     required this.publishedDate,
     required this.link,
+    required this.cleanUrl,
     required this.excerpt,
     required this.summary,
     required this.topic,
@@ -27,6 +29,7 @@ class Article {
     String? author,
     String? publishedDate,
     String? link,
+    String? cleanUrl,
     String? excerpt,
     String? summary,
     String? topic,
@@ -38,6 +41,7 @@ class Article {
       author: author ?? this.author,
       publishedDate: publishedDate ?? this.publishedDate,
       link: link ?? this.link,
+      cleanUrl: cleanUrl ?? this.cleanUrl,
       excerpt: excerpt ?? this.excerpt,
       summary: summary ?? this.summary,
       topic: topic ?? this.topic,
@@ -52,6 +56,7 @@ class Article {
       'author': author,
       'publishedDate': publishedDate,
       'link': link,
+      'cleanUrl': cleanUrl,
       'excerpt': excerpt,
       'summary': summary,
       'topic': topic,
@@ -66,6 +71,7 @@ class Article {
       author: map['author'] ?? '',
       publishedDate: map['publishedDate'] ?? '',
       link: map['link'] ?? '',
+      cleanUrl: map['cleanUrl'] ?? '',
       excerpt: map['excerpt'] ?? '',
       summary: map['summary'] ?? '',
       topic: map['topic'] ?? '',
@@ -81,7 +87,7 @@ class Article {
 
   @override
   String toString() {
-    return 'Article(title: $title, author: $author, publishedDate: $publishedDate, link: $link, excerpt: $excerpt, summary: $summary, topic: $topic, media: $media, id: $id)';
+    return 'Article(title: $title, author: $author, publishedDate: $publishedDate, link: $link, cleanUrl: $cleanUrl, excerpt: $excerpt, summary: $summary, topic: $topic, media: $media, id: $id)';
   }
 
   @override
@@ -93,6 +99,7 @@ class Article {
         other.author == author &&
         other.publishedDate == publishedDate &&
         other.link == link &&
+        other.cleanUrl == cleanUrl &&
         other.excerpt == excerpt &&
         other.summary == summary &&
         other.topic == topic &&
@@ -106,6 +113,7 @@ class Article {
         author.hashCode ^
         publishedDate.hashCode ^
         link.hashCode ^
+        cleanUrl.hashCode ^
         excerpt.hashCode ^
         summary.hashCode ^
         topic.hashCode ^
