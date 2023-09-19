@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:news_app/constants/constants.dart';
+import 'package:news_app/models/article.dart';
 import 'package:news_app/providers/sort_by_state.dart';
 import 'package:news_app/providers/country_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,19 +17,16 @@ import '../providers/domains_state.dart';
 part 'news_repository.g.dart';
 
 class NewsRepository {
-  final String apiKey = Config.newsApiKey;
+  final String apiKey = Config.newsCatcherApiKey;
 
-  Future<List<News>> fetchNews(List<String> domains, int page) async {
+  Future<List<Article>> fetchNews(List<String> domains, int page) async {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
-      host: 'newsapi.org',
-      path: 'v2/everything',
+      host: 'api.newscatcherapi.com',
+      path: 'v2/latest-headlines',
       queryParameters: {
-        'apiKey': apiKey,
-        'q': '',
-        'domains': domains.join(','),
-        'sortBy': 'publishedAt',
+        'sources': domains.join(','),
         'language': 'en',
         'pageSize': pageSize.toString(),
         'page': page.toString(),
@@ -46,8 +44,8 @@ class NewsRepository {
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
-        return List<News>.from(
-          body['articles'].map((article) => News.fromMap(article)),
+        return List<Article>.from(
+          body['articles'].map((article) => Article.fromMap(article)),
         );
       } else {
         throw 'Error fetching news articles';
@@ -59,7 +57,7 @@ class NewsRepository {
     }
   }
 
-  Future<List<News>> fetchNewsByQuery(
+  Future<List<Article>> fetchNewsByQuery(
       String query, SortBy sortBy, int page) async {
     // generating url with parameters
     final url = Uri(
@@ -76,13 +74,12 @@ class NewsRepository {
     );
 
     try {
-      final response =
-          await http.get(url, headers: {'x-api-key': Config.newsCatcherApiKey});
+      final response = await http.get(url, headers: {'x-api-key': apiKey});
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
-        return List<News>.from(
-          body['articles'].map((article) => News.fromMap(article)),
+        return List<Article>.from(
+          body['articles'].map((article) => Article.fromMap(article)),
         );
       } else {
         throw 'Error fetching news articles';
@@ -94,19 +91,18 @@ class NewsRepository {
     }
   }
 
-  Future<List<News>> fetchTopHeadlines(
+  Future<List<Article>> fetchTopHeadlines(
       String country, String category, int page) async {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
-      host: 'newsapi.org',
-      path: 'v2/top-headlines',
+      host: 'api.newscatcherapi.com',
+      path: 'v2/latest-headlines',
       queryParameters: {
-        'apiKey': apiKey,
-        'country': country,
+        'countries': country,
         'pageSize': pageSize.toString(),
         'page': page.toString(),
-        'category': category,
+        'topic': category,
       },
     );
 
@@ -115,8 +111,8 @@ class NewsRepository {
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
-        return List<News>.from(
-          body['articles'].map((article) => News.fromMap(article)),
+        return List<Article>.from(
+          body['articles'].map((article) => Article.fromMap(article)),
         );
       } else {
         throw 'Error fetching news articles';
@@ -135,14 +131,14 @@ NewsRepository newsRepository(NewsRepositoryRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> newsListFuture(NewsListFutureRef ref,
+FutureOr<List<Article>> newsListFuture(NewsListFutureRef ref,
     {required int page}) {
   final domains = ref.watch(domainsProvider);
   return ref.read(newsRepositoryProvider).fetchNews(domains, page);
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
+FutureOr<List<Article>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
     {required int page}) {
   final country = ref.watch(countriesStateProvider);
   final category = ref.watch(categoryStateProvider);
@@ -152,7 +148,7 @@ FutureOr<List<News>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
 }
 
 @riverpod
-FutureOr<List<News>> searchResults(SearchResultsRef ref,
+FutureOr<List<Article>> searchResults(SearchResultsRef ref,
     {required String query, required int page}) {
   final sortBy = ref.watch(sortByStateProvider);
   return ref.read(newsRepositoryProvider).fetchNewsByQuery(query, sortBy, page);
