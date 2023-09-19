@@ -4,15 +4,15 @@ part 'sort_by_state.g.dart';
 
 enum SortBy {
   relevancy,
-  popularity,
-  publishedAt,
+  date,
+  rank,
 }
 
 @Riverpod(keepAlive: true)
 class SortByState extends _$SortByState {
   @override
   SortBy build() {
-    return SortBy.publishedAt;
+    return SortBy.date;
   }
 
   void update(SortBy sortBy) {

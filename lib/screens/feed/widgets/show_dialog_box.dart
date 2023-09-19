@@ -28,7 +28,7 @@ Future<void> showDialogBox(BuildContext context, WidgetRef ref) {
             ),
             RadioListTile(
               title: const Text('Popularity'),
-              value: SortBy.popularity,
+              value: SortBy.rank,
               groupValue: sortBy,
               onChanged: (value) {
                 updateSortBy(value!);
@@ -36,7 +36,7 @@ Future<void> showDialogBox(BuildContext context, WidgetRef ref) {
             ),
             RadioListTile(
               title: const Text('Latest'),
-              value: SortBy.publishedAt,
+              value: SortBy.date,
               groupValue: sortBy,
               onChanged: (value) {
                 updateSortBy(value!);
