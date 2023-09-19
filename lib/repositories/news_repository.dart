@@ -64,20 +64,20 @@ class NewsRepository {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
-      host: 'newsapi.org',
-      path: 'v2/everything',
+      host: 'api.newscatcherapi.com',
+      path: 'v2/search',
       queryParameters: {
-        'apiKey': apiKey,
         'q': query,
-        'sortBy': sortBy.name,
-        'language': 'en',
+        'sort_by': sortBy.name,
+        'lang': 'en',
         'page': page.toString(),
-        'pageSize': pageSize.toString(),
+        'page_size': pageSize.toString(),
       },
     );
 
     try {
-      final response = await http.get(url);
+      final response =
+          await http.get(url, headers: {'x-api-key': Config.newsCatcherApiKey});
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
