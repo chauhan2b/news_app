@@ -5,20 +5,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'category_state.g.dart';
 
 enum Category {
+  news,
+  sport,
+  tech,
+  world,
+  finance,
+  politics,
   business,
+  economics,
   entertainment,
-  general,
-  health,
+  beauty,
+  travel,
+  music,
+  food,
   science,
-  sports,
-  technology,
+  gaming,
+  energy,
 }
 
 @Riverpod(keepAlive: true)
 class CategoryState extends _$CategoryState {
   void _loadCategory() async {
     final prefs = await SharedPreferences.getInstance();
-    final category = prefs.getString(userCategory) ?? 'entertainment';
+    final category = prefs.getString(userCategory) ?? 'news';
     state = Category.values
         .where((element) => element.toString().split('.').last == category)
         .first;
