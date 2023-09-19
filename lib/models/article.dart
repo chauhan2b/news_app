@@ -3,7 +3,7 @@ import 'dart:convert';
 class Article {
   final String title;
   final String author;
-  final String publishedDate;
+  final DateTime publishedDate;
   final String link;
   final String cleanUrl;
   final String excerpt;
@@ -27,7 +27,7 @@ class Article {
   Article copyWith({
     String? title,
     String? author,
-    String? publishedDate,
+    DateTime? publishedDate,
     String? link,
     String? cleanUrl,
     String? excerpt,
@@ -54,7 +54,7 @@ class Article {
     return {
       'title': title,
       'author': author,
-      'publishedDate': publishedDate,
+      'publishedDate': publishedDate.millisecondsSinceEpoch,
       'link': link,
       'cleanUrl': cleanUrl,
       'excerpt': excerpt,
@@ -69,7 +69,7 @@ class Article {
     return Article(
       title: map['title'] ?? '',
       author: map['author'] ?? '',
-      publishedDate: map['publishedDate'] ?? '',
+      publishedDate: DateTime.fromMillisecondsSinceEpoch(map['publishedDate']),
       link: map['link'] ?? '',
       cleanUrl: map['cleanUrl'] ?? '',
       excerpt: map['excerpt'] ?? '',
