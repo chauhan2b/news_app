@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:news_app/constants/constants.dart';
 import 'package:news_app/models/article.dart';
 import 'package:news_app/models/news_response.dart';
@@ -44,7 +43,6 @@ class NewsRepository {
       final response = await http.get(url, headers: {'x-api-key': apiKey});
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
-        // convert each json article into list of article
         final newsResponse = NewsResponse.fromJson(body);
         return newsResponse.articles;
       } else {
@@ -77,7 +75,6 @@ class NewsRepository {
       final response = await http.get(url, headers: {'x-api-key': apiKey});
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
-        // convert each json article into list of article
         final newsResponse = NewsResponse.fromJson(body);
         return newsResponse.articles;
       } else {
@@ -106,16 +103,11 @@ class NewsRepository {
       },
     );
 
-    print(url);
-
     try {
       final response = await http.get(url, headers: {'x-api-key': apiKey});
-      debugPrint(response.body);
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
-        // convert each json article into list of article
         final newsResponse = NewsResponse.fromJson(body);
-        debugPrint(newsResponse.toString());
         return newsResponse.articles;
       } else {
         throw 'Error fetching news articles';
