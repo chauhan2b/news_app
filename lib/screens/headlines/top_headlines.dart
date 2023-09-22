@@ -81,26 +81,15 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
                       ],
                     );
                   },
-                  error: (error, stackTrace) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return ListView(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            constraints: BoxConstraints(
-                              minHeight: constraints.maxHeight,
-                            ),
-                            child: Center(
-                              child: Text(
-                                error.toString(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                  error: (error, stackTrace) {
+                    if (index > 0) {
+                      return null;
+                    }
+
+                    return Center(
+                      child: Text(error.toString()),
+                    );
+                  },
                   loading: () {
                     return const ArticleLoadingShimmer();
                   },

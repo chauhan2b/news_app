@@ -148,7 +148,15 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                       ],
                     );
                   },
-                  error: (error, stackTrace) => const Text('error'),
+                  error: (error, stackTrace) {
+                    if (index > 0) {
+                      return null;
+                    }
+
+                    return Center(
+                      child: Text(error.toString()),
+                    );
+                  },
                   loading: () {
                     return const ArticleLoadingShimmer();
                   },
