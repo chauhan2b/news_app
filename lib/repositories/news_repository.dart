@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:news_app/constants/constants.dart';
 import 'package:news_app/models/article.dart';
+import 'package:news_app/models/news_response.dart';
 import 'package:news_app/providers/sort_by_state.dart';
 import 'package:news_app/providers/country_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,26 +12,25 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../config/config.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/news.dart';
 import '../providers/category_state.dart';
 import '../providers/domains_state.dart';
 
 part 'news_repository.g.dart';
 
 class NewsRepository {
-  final String apiKey = Config.newsCatcherApiKey;
+  static const apiKey = Config.newsCatcherApiKey;
 
   Future<List<Article>> fetchNews(List<String> domains, int page) async {
     // generating url with parameters
     final url = Uri(
       scheme: 'https',
       host: 'api.newscatcherapi.com',
-      path: 'v2/latest-headlines',
+      path: 'v2/latest_headlines',
       queryParameters: {
         'sources': domains.join(','),
-        'language': 'en',
-        'pageSize': pageSize.toString(),
-        'page': page.toString(),
+        'lang': 'en',
+        'page_size': pageSize,
+        'page': page,
       },
     );
 
@@ -40,13 +41,12 @@ class NewsRepository {
       }
 
       // fetch news articles
-      final response = await http.get(url);
+      final response = await http.get(url, headers: {'x-api-key': apiKey});
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
-        return List<Article>.from(
-          body['articles'].map((article) => Article.fromMap(article)),
-        );
+        final newsResponse = NewsResponse.fromJson(body);
+        return newsResponse.articles;
       } else {
         throw 'Error fetching news articles';
       }
@@ -68,8 +68,8 @@ class NewsRepository {
         'q': query,
         'sort_by': sortBy.name,
         'lang': 'en',
-        'page': page.toString(),
-        'page_size': pageSize.toString(),
+        'page': page,
+        'page_size': pageSize,
       },
     );
 
@@ -78,9 +78,8 @@ class NewsRepository {
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
-        return List<Article>.from(
-          body['articles'].map((article) => Article.fromMap(article)),
-        );
+        final newsResponse = NewsResponse.fromJson(body);
+        return newsResponse.articles;
       } else {
         throw 'Error fetching news articles';
       }
@@ -97,23 +96,27 @@ class NewsRepository {
     final url = Uri(
       scheme: 'https',
       host: 'api.newscatcherapi.com',
-      path: 'v2/latest-headlines',
+      path: 'v2/latest_headlines',
       queryParameters: {
+        'lang': 'en',
         'countries': country,
-        'pageSize': pageSize.toString(),
-        'page': page.toString(),
+        'page_size': pageSize,
+        'page': page,
         'topic': category,
       },
     );
 
+    print(url);
+
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: {'x-api-key': apiKey});
+      debugPrint(response.body);
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         // convert each json article into list of article
-        return List<Article>.from(
-          body['articles'].map((article) => Article.fromMap(article)),
-        );
+        final newsResponse = NewsResponse.fromJson(body);
+        debugPrint(newsResponse.toString());
+        return newsResponse.articles;
       } else {
         throw 'Error fetching news articles';
       }
