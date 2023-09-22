@@ -12,7 +12,7 @@ enum SortBy {
 class SortByState extends _$SortByState {
   @override
   SortBy build() {
-    return SortBy.date;
+    return SortBy.relevancy;
   }
 
   void update(SortBy sortBy) {
