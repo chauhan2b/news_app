@@ -32,6 +32,7 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
   Widget build(BuildContext context) {
     const pageKey = ValueKey('search-results');
     const duration = Duration(milliseconds: 300);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your results'),
@@ -82,6 +83,29 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
 
               return articles.when(
                 data: (articles) {
+                  if (articles.isEmpty) {
+                    if (index > 0) {
+                      return null;
+                    }
+
+                    return Center(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: size.height * 0.38),
+                        child: const Column(
+                          children: [
+                            Icon(Icons.error),
+                            SizedBox(height: 8.0),
+                            Text(
+                              'No results found',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
                   if (indexInPage >= articles.length) {
                     return null;
                   }
