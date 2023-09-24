@@ -28,8 +28,8 @@ class NewsRepository {
       queryParameters: {
         'sources': domains.join(','),
         'lang': 'en',
-        'page_size': pageSize,
-        'page': page,
+        'page_size': pageSize.toString(),
+        'page': page.toString(),
       },
     );
 
@@ -66,8 +66,8 @@ class NewsRepository {
         'q': query,
         'sort_by': sortBy.name,
         'lang': 'en',
-        'page': page,
-        'page_size': pageSize,
+        'page': page.toString(),
+        'page_size': pageSize.toString(),
       },
     );
 
@@ -98,8 +98,8 @@ class NewsRepository {
         'lang': 'en',
         'countries': country,
         'page_size': pageSize,
-        'page': page,
-        'topic': category,
+        'page': page.toString(),
+        'topic': category.toString(),
       },
     );
 
