@@ -58,6 +58,15 @@ class ArticleLoadingShimmer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
+                const SizedBox(width: 8),
+                Container(
+                  height: 24,
+                  width: 24,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
               ],
             )
           ],
