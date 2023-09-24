@@ -67,9 +67,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
 
                 return headlines.when(
                   data: (headlines) {
-                    // free api is limited to 100 articles, so infinite loading will not work
-                    // remove page > 2 when api supports infinite loading
-                    if (page > 2 || indexInPage >= headlines.length) {
+                    if (indexInPage >= headlines.length) {
                       return null;
                     }
 

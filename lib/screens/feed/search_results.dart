@@ -82,9 +82,7 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
 
               return articles.when(
                 data: (articles) {
-                  // free api is limited to 100 articles, so infinite loading will not work
-                  // remove page > 2 when api supports infinite loading
-                  if (page > 2 || indexInPage >= articles.length) {
+                  if (indexInPage >= articles.length) {
                     return null;
                   }
 
