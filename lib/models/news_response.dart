@@ -12,7 +12,7 @@ class NewsResponse with _$NewsResponse {
     required int page,
     @JsonKey(name: 'total_pages') required int totalPages,
     @JsonKey(name: 'page_size') required int pageSize,
-    required List<Article> articles,
+    required List<Article>? articles,
   }) = _NewsResponse;
 
   factory NewsResponse.fromJson(Map<String, Object?> json) =>

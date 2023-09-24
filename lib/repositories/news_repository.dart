@@ -44,7 +44,7 @@ class NewsRepository {
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         final newsResponse = NewsResponse.fromJson(body);
-        return newsResponse.articles;
+        return newsResponse.articles ?? [];
       } else {
         throw 'Error fetching news articles';
       }
@@ -76,7 +76,7 @@ class NewsRepository {
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         final newsResponse = NewsResponse.fromJson(body);
-        return newsResponse.articles;
+        return newsResponse.articles ?? [];
       } else {
         throw 'Error fetching news articles';
       }
@@ -108,7 +108,7 @@ class NewsRepository {
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
         final newsResponse = NewsResponse.fromJson(body);
-        return newsResponse.articles;
+        return newsResponse.articles ?? [];
       } else {
         throw 'Error fetching news articles';
       }
