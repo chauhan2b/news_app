@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:news_app/models/article.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
@@ -105,6 +106,34 @@ class ArticleCard extends ConsumerWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.newspaper),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          // mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Summary',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                            const Divider(),
+                            Text(
+                              article.summary == null ||
+                                      article.summary!.isEmpty
+                                  ? 'No summary found'
+                                  : article.summary!.replaceAll('\n', ''),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
