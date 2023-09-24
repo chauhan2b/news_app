@@ -13,7 +13,6 @@ enum Category {
   politics,
   sport,
   tech,
-  travel,
   world,
 }
 
