@@ -14,17 +14,20 @@ class ArticleCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     Color primaryColor = Theme.of(context).colorScheme.primary;
-    final dateTime = DateTime.now().difference(article.publishedDate);
+    final dateTime =
+        DateTime.now().difference(article.publishedDate ?? DateTime.now());
     final articleDate = DateTime.now().subtract(dateTime);
     return InkWell(
-      onTap: () async {
-        if (!await launchUrl(
-          Uri.parse(article.link),
-          mode: LaunchMode.externalApplication,
-        )) {
-          throw Exception('Could not launch');
-        }
-      },
+      onTap: article.link == null || article.link!.isEmpty
+          ? null
+          : () async {
+              if (!await launchUrl(
+                Uri.parse(article.link!),
+                mode: LaunchMode.externalApplication,
+              )) {
+                throw Exception('Could not launch');
+              }
+            },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
         child: Column(
@@ -32,46 +35,60 @@ class ArticleCard extends ConsumerWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
-              child: Image.network(
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-
-                  return SizedBox(
-                    height: size.height * 0.24,
-                    width: double.infinity,
-                    child: Shimmer.fromColors(
-                      baseColor: primaryColor.withOpacity(0.05),
-                      highlightColor: primaryColor.withOpacity(0.2),
-                      child: Container(
-                        color: Colors.black,
+              child: article.media == null || article.media!.isEmpty
+                  ? Container(
+                      color: primaryColor.withOpacity(0.05),
+                      height: size.height * 0.24,
+                      width: double.infinity,
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error),
+                          Text('Image not found'),
+                        ],
                       ),
+                    )
+                  : Image.network(
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+
+                        return SizedBox(
+                          height: size.height * 0.24,
+                          width: double.infinity,
+                          child: Shimmer.fromColors(
+                            baseColor: primaryColor.withOpacity(0.05),
+                            highlightColor: primaryColor.withOpacity(0.2),
+                            child: Container(
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: primaryColor.withOpacity(0.05),
+                        height: size.height * 0.24,
+                        width: double.infinity,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error),
+                            Text('Could not load image'),
+                          ],
+                        ),
+                      ),
+                      article.media!,
+                      fit: BoxFit.cover,
+                      height: size.height * 0.24,
+                      width: double.infinity,
                     ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: primaryColor.withOpacity(0.05),
-                  height: size.height * 0.24,
-                  width: double.infinity,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.error),
-                      Text('Could not load image'),
-                    ],
-                  ),
-                ),
-                article.media,
-                fit: BoxFit.cover,
-                height: size.height * 0.24,
-                width: double.infinity,
-              ),
             ),
             const SizedBox(height: 12.0),
             Text(
-              article.title,
+              article.title ?? 'No title found',
               textAlign: TextAlign.left,
               style: const TextStyle(
                 fontSize: 18.0,
@@ -92,9 +109,11 @@ class ArticleCard extends ConsumerWidget {
                 IconButton(
                   padding: EdgeInsets.zero,
                   icon: const Icon(Icons.share_outlined),
-                  onPressed: () {
-                    Share.share(article.link);
-                  },
+                  onPressed: article.link == null || article.link!.isEmpty
+                      ? null
+                      : () {
+                          Share.share(article.link!);
+                        },
                 ),
               ],
             ),
