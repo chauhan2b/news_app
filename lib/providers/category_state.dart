@@ -5,22 +5,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'category_state.g.dart';
 
 enum Category {
-  news,
+  business,
+  entertainment,
+  finance,
+  gaming,
+  music,
+  politics,
   sport,
   tech,
-  world,
-  finance,
-  politics,
-  business,
-  economics,
-  entertainment,
-  beauty,
   travel,
-  music,
-  food,
-  science,
-  gaming,
-  energy,
+  world,
 }
 
 @Riverpod(keepAlive: true)
