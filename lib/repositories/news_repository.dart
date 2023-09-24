@@ -97,9 +97,9 @@ class NewsRepository {
       queryParameters: {
         'lang': 'en',
         'countries': country,
-        'page_size': pageSize,
+        'page_size': pageSize.toString(),
         'page': page.toString(),
-        'topic': category.toString(),
+        'topic': category,
       },
     );
 
