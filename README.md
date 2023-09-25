@@ -51,7 +51,7 @@ This project is created using [NewsCatcher API](https://www.newscatcherapi.com/)
 4. Generate the providers using riverpod generator
 
     ```shell
-    dart run build_runner watch -d
+    dart run build_runner build -d
 
 5. Before running, you will have to add your own api key. Get your API key from [here](https://www.newscatcherapi.com/).
 
