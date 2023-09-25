@@ -20,6 +20,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
     final scrollController = ScrollController();
     const pageKey = ValueKey('top-headlines');
     const duration = Duration(milliseconds: 300);
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -85,7 +86,14 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
                     }
 
                     return Center(
-                      child: Text(error.toString()),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: size.height * 0.4),
+                        child: Text(
+                          error.toString(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     );
                   },
                   loading: () {

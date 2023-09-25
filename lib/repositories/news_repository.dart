@@ -46,7 +46,7 @@ class NewsRepository {
         final newsResponse = NewsResponse.fromJson(body);
         return newsResponse.articles ?? [];
       } else {
-        throw 'Error fetching news articles';
+        throw 'Error fetching news articles!';
       }
     } on SocketException {
       throw ('Unable to fetch your feed. Check your internet connection and try again!');
@@ -78,7 +78,7 @@ class NewsRepository {
         final newsResponse = NewsResponse.fromJson(body);
         return newsResponse.articles ?? [];
       } else {
-        throw 'Error fetching news articles';
+        throw 'Error fetching news articles!';
       }
     } on SocketException {
       throw ('Unable to fetch articles. Check your internet connection and try again!');
@@ -110,7 +110,7 @@ class NewsRepository {
         final newsResponse = NewsResponse.fromJson(body);
         return newsResponse.articles ?? [];
       } else {
-        throw 'Error fetching news articles';
+        throw 'Error fetching news articles!';
       }
     } on SocketException {
       throw ('Unable to fetch headlines. Check your internet connection and try again!');

@@ -91,7 +91,7 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
                     return Center(
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.38),
+                            EdgeInsets.symmetric(vertical: size.height * 0.4),
                         child: const Column(
                           children: [
                             Icon(Icons.error),

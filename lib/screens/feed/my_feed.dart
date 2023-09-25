@@ -40,6 +40,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
     final scrollController = ScrollController();
     const pageKey = ValueKey('my-feed');
     const duration = Duration(milliseconds: 300);
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -152,7 +153,14 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                     }
 
                     return Center(
-                      child: Text(error.toString()),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: size.height * 0.4),
+                        child: Text(
+                          error.toString(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     );
                   },
                   loading: () {
