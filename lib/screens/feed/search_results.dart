@@ -124,7 +124,14 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
                   }
 
                   return Center(
-                    child: Text(error.toString()),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.4),
+                      child: Text(
+                        error.toString(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   );
                 },
                 loading: () {
