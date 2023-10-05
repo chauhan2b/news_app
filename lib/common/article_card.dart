@@ -110,14 +110,18 @@ class ArticleCard extends ConsumerWidget {
                   icon: const Icon(Icons.newspaper),
                   onPressed: () {
                     showModalBottomSheet(
+                      showDragHandle: true,
                       context: context,
                       builder: (context) => Padding(
-                        padding: const EdgeInsets.all(24.0),
+                        padding: const EdgeInsets.only(
+                          left: 24.0,
+                          right: 24.0,
+                          bottom: 24.0,
+                        ),
                         child: Column(
-                          // mainAxisSize: MainAxisSize.min,
                           children: [
                             const Text(
-                              'Summary',
+                              'Summary (Beta)',
                               style: TextStyle(fontSize: 18.0),
                             ),
                             const Divider(),
