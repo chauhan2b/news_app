@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/common/settings_header.dart';
 import 'package:news_app/providers/dark_theme_state.dart';
 import 'package:news_app/screens/settings/widgets/category_dropdown.dart';
 import 'package:news_app/screens/settings/widgets/country_dropdown.dart';
@@ -20,6 +21,7 @@ class Settings extends ConsumerWidget {
       body: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: [
+          const SettingsHeader(text: 'Theme'),
           ListTile(
             leading: darkTheme
                 ? const Icon(Icons.dark_mode)
@@ -37,6 +39,7 @@ class Settings extends ConsumerWidget {
               },
             ),
           ),
+          const SettingsHeader(text: 'My Feed'),
           ListTile(
             leading: const Icon(Icons.newspaper_outlined),
             title: const Text('Manage sources'),
@@ -44,6 +47,7 @@ class Settings extends ConsumerWidget {
               context.pushNamed(AppRoute.manageSources.name);
             },
           ),
+          const SettingsHeader(text: 'Top Headlines'),
           const CountryDropdown(),
           const CategoryDropdown(),
         ],
