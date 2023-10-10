@@ -21,7 +21,7 @@ class TopHeadlinesDropdown extends ConsumerWidget {
         value: country,
         icon: const Icon(Icons.keyboard_arrow_down),
         onChanged: (val) {
-          ref.read(countriesStateProvider.notifier).update(val!);
+          ref.read(countriesStateProvider.notifier).updateCountry(val!);
         },
         items: countries.map((String val) {
           return DropdownMenuItem(

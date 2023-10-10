@@ -33,7 +33,7 @@ class CountriesState extends _$CountriesState {
     return _countries[0];
   }
 
-  void update(String country) {
+  void updateCountry(String country) {
     state = country;
     _saveCountryPreference(state);
   }

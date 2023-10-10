@@ -8,7 +8,7 @@ Future<void> showDialogBox(BuildContext context, WidgetRef ref) {
   final sortBy = ref.watch(sortByStateProvider);
 
   void updateSortBy(SortBy value) {
-    ref.read(sortByStateProvider.notifier).update(value);
+    ref.read(sortByStateProvider.notifier).updateSortBy(value);
     context.pop();
   }
 

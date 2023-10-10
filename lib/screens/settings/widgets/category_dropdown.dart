@@ -18,7 +18,7 @@ class CategoryDropdown extends ConsumerWidget {
         value: category,
         icon: const Icon(Icons.keyboard_arrow_down),
         onChanged: (val) {
-          ref.read(categoryStateProvider.notifier).update(val!);
+          ref.read(categoryStateProvider.notifier).updateCategory(val!);
         },
         items: Category.values.map((Category val) {
           return DropdownMenuItem(

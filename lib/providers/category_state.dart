@@ -20,7 +20,7 @@ enum Category {
 class CategoryState extends _$CategoryState {
   void _loadCategory() async {
     final prefs = await SharedPreferences.getInstance();
-    final category = prefs.getString(userCategory) ?? 'entertainment';
+    final category = prefs.getString(userCategory) ?? 'tech';
     state = Category.values
         .where((element) => element.toString().split('.').last == category)
         .first;
@@ -37,7 +37,7 @@ class CategoryState extends _$CategoryState {
     return Category.entertainment;
   }
 
-  void update(Category category) {
+  void updateCategory(Category category) {
     state = category;
     _saveCategory(category);
   }

@@ -15,7 +15,7 @@ class SortByState extends _$SortByState {
     return SortBy.relevancy;
   }
 
-  void update(SortBy sortBy) {
+  void updateSortBy(SortBy sortBy) {
     state = sortBy;
   }
 }
