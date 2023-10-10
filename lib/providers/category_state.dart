@@ -18,10 +18,10 @@ enum Category {
 
 @Riverpod(keepAlive: true)
 class CategoryState extends _$CategoryState {
-  void _loadCategory() async {
+  Future<Category> _loadCategory() async {
     final prefs = await SharedPreferences.getInstance();
     final category = prefs.getString(userCategory) ?? 'tech';
-    state = Category.values
+    return Category.values
         .where((element) => element.toString().split('.').last == category)
         .first;
   }
@@ -32,13 +32,13 @@ class CategoryState extends _$CategoryState {
   }
 
   @override
-  Category build() {
-    _loadCategory();
-    return Category.entertainment;
+  Future<Category> build() async {
+    return _loadCategory();
   }
 
-  void updateCategory(Category category) {
-    state = category;
+  void updateCategory(Category category) async {
+    state = const AsyncValue.loading();
     _saveCategory(category);
+    state = await AsyncValue.guard(() => _loadCategory());
   }
 }

@@ -17,24 +17,24 @@ List<String> countries(CountriesRef ref) {
 
 @Riverpod(keepAlive: true)
 class CountriesState extends _$CountriesState {
+  Future<String> _loadCountryPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(userCountry) ?? _countries[0];
+  }
+
   void _saveCountryPreference(String value) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(userCountry, value);
   }
 
-  void _loadCountryPreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    state = prefs.getString(userCountry) ?? _countries[0];
-  }
-
   @override
-  String build() {
-    _loadCountryPreference();
-    return _countries[0];
+  Future<String> build() async {
+    return _loadCountryPreference();
   }
 
-  void updateCountry(String country) {
-    state = country;
-    _saveCountryPreference(state);
+  void updateCountry(String country) async {
+    state = const AsyncValue.loading();
+    _saveCountryPreference(country);
+    state = await AsyncValue.guard(() => _loadCountryPreference());
   }
 }

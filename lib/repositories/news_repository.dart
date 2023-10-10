@@ -134,9 +134,9 @@ FutureOr<List<Article>> newsListFuture(NewsListFutureRef ref,
 
 @Riverpod(keepAlive: true)
 FutureOr<List<Article>> topHeadlinesFuture(TopHeadlinesFutureRef ref,
-    {required int page}) {
-  final country = ref.watch(countriesStateProvider);
-  final category = ref.watch(categoryStateProvider);
+    {required int page}) async {
+  final country = await ref.watch(countriesStateProvider.future);
+  final category = await ref.watch(categoryStateProvider.future);
   return ref
       .read(newsRepositoryProvider)
       .fetchTopHeadlines(country, category.name, page);
