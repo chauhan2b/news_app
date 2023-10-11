@@ -6,30 +6,36 @@ part 'domains_state.g.dart';
 
 @Riverpod(keepAlive: true)
 class Domains extends _$Domains {
-  void _load() async {
+  Future<List<String>> _loadDomains() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    state = prefs.getStringList(userDomains) ?? [];
+    return prefs.getStringList(userDomains) ?? [];
   }
 
-  void _save() async {
+  void _saveDomains(List<String> domains) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(userDomains, state);
+    prefs.setStringList(userDomains, domains);
   }
 
   @override
-  List<String> build() {
+  Future<List<String>> build() async {
     // fetch user's saved domains
-    _load();
-    return [];
+    // we have to use async because we need to wait for _loadDomains
+    return _loadDomains();
   }
 
   void add(String domain) async {
-    state = [...state, domain];
-    _save();
+    state = const AsyncValue.loading();
+    List<String> domains = await _loadDomains();
+    domains = [...domains, domain];
+    _saveDomains(domains);
+    state = await AsyncValue.guard(() => _loadDomains());
   }
 
   void remove(String domain) async {
-    state = state.where((element) => element != domain).toList();
-    _save();
+    state = const AsyncValue.loading();
+    List<String> domains = await _loadDomains();
+    domains = domains.where((element) => element != domain).toList();
+    _saveDomains(domains);
+    state = await AsyncValue.guard(() => _loadDomains());
   }
 }

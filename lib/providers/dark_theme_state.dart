@@ -7,9 +7,9 @@ part 'dark_theme_state.g.dart';
 
 @riverpod
 class DarkThemeState extends _$DarkThemeState {
-  void _loadDarkThemeState() async {
+  Future<bool> _loadDarkThemeState() async {
     final prefs = await SharedPreferences.getInstance();
-    state = prefs.getBool(darkModePreference) ?? false;
+    return prefs.getBool(darkModePreference) ?? false;
   }
 
   void _saveDarkThemeState(bool value) async {
@@ -18,13 +18,14 @@ class DarkThemeState extends _$DarkThemeState {
   }
 
   @override
-  bool build() {
-    _loadDarkThemeState();
-    return false;
+  Future<bool> build() async {
+    return _loadDarkThemeState();
   }
 
-  void toggleDarkMode() {
-    state = !state;
-    _saveDarkThemeState(state);
+  void toggleDarkMode() async {
+    state = const AsyncValue.loading();
+    bool value = await _loadDarkThemeState();
+    _saveDarkThemeState(!value);
+    state = await AsyncValue.guard(() => _loadDarkThemeState());
   }
 }

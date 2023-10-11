@@ -13,7 +13,7 @@ class Settings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final darkTheme = ref.watch(darkThemeStateProvider);
+    final darkThemeFuture = ref.watch(darkThemeStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -23,20 +23,32 @@ class Settings extends ConsumerWidget {
         children: [
           const SettingsHeader(text: 'Theme'),
           ListTile(
-            leading: darkTheme
-                ? const Icon(Icons.dark_mode)
-                : const Icon(Icons.dark_mode_outlined),
+            leading: darkThemeFuture.when(
+              data: (darkMode) => darkMode
+                  ? const Icon(Icons.dark_mode)
+                  : const Icon(
+                      Icons.dark_mode_outlined,
+                    ),
+              error: (error, stackTrace) =>
+                  const Icon(Icons.dark_mode_outlined),
+              loading: () => const Icon(Icons.dark_mode_outlined),
+            ),
             title: const Text(
               'Dark Mode',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
-            trailing: Switch(
-              value: darkTheme,
-              onChanged: (value) {
-                ref.read(darkThemeStateProvider.notifier).toggleDarkMode();
-              },
+            trailing: darkThemeFuture.when(
+              data: (darkTheme) => Switch(
+                value: darkTheme,
+                onChanged: (value) {
+                  ref.read(darkThemeStateProvider.notifier).toggleDarkMode();
+                },
+              ),
+              error: (error, stackTrace) =>
+                  Switch(value: false, onChanged: (_) {}),
+              loading: () => const CircularProgressIndicator(),
             ),
           ),
           const SettingsHeader(text: 'My Feed'),

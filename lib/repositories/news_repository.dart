@@ -127,8 +127,8 @@ NewsRepository newsRepository(NewsRepositoryRef ref) {
 
 @Riverpod(keepAlive: true)
 FutureOr<List<Article>> newsListFuture(NewsListFutureRef ref,
-    {required int page}) {
-  final domains = ref.watch(domainsProvider);
+    {required int page}) async {
+  final domains = await ref.watch(domainsProvider.future);
   return ref.read(newsRepositoryProvider).fetchNews(domains, page);
 }
 
