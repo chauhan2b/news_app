@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/common/article_card.dart';
 import 'package:news_app/common/article_loading_shimmer.dart';
 import 'package:news_app/constants/constants.dart';
+import 'package:news_app/providers/sort_by_state.dart';
 import 'package:news_app/repositories/news_repository.dart';
 import 'package:news_app/screens/feed/widgets/show_dialog_box.dart';
 
@@ -39,9 +40,14 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
         actions: [
           IconButton(
             onPressed: () async {
+              final currentSortBy = ref.read(sortByStateProvider);
               await showDialogBox(context, ref);
-              // go to top when loading new articles
-              scrollController.jumpTo(0);
+              final newSortBy = ref.read(sortByStateProvider);
+
+              // go to top only when value of sortBy is changed
+              if (currentSortBy != newSortBy && scrollController.hasClients) {
+                scrollController.jumpTo(0);
+              }
             },
             icon: const Icon(Icons.sort),
           )
