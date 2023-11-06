@@ -13,42 +13,52 @@ class Settings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final darkThemeFuture = ref.watch(darkThemeStateProvider);
+    final darkTheme = ref.watch(darkThemeStateProvider);
+    final systemTheme = ref.watch(systemThemeStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
       body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+        // physics: const NeverScrollableScrollPhysics(),
         children: [
           const SettingsHeader(text: 'Theme'),
           ListTile(
-            leading: darkThemeFuture.when(
-              data: (darkMode) => darkMode
-                  ? const Icon(Icons.dark_mode)
-                  : const Icon(
-                      Icons.dark_mode_outlined,
-                    ),
-              error: (error, stackTrace) =>
-                  const Icon(Icons.dark_mode_outlined),
-              loading: () => const Icon(Icons.dark_mode_outlined),
+            leading: const Icon(Icons.phone_android),
+            title: const Text(
+              'Follow System',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
             ),
+            trailing: Switch(
+              value: systemTheme.value ?? false,
+              onChanged: (value) {
+                ref.read(systemThemeStateProvider.notifier).toggleSystemTheme();
+              },
+            ),
+          ),
+          ListTile(
+            leading: darkTheme.value == true
+                ? const Icon(Icons.dark_mode)
+                : const Icon(
+                    Icons.dark_mode_outlined,
+                  ),
             title: const Text(
               'Dark Mode',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
-            trailing: darkThemeFuture.when(
-              data: (darkTheme) => Switch(
-                value: darkTheme,
-                onChanged: (value) {
-                  ref.read(darkThemeStateProvider.notifier).toggleDarkMode();
-                },
-              ),
-              error: (error, stackTrace) =>
-                  Switch(value: false, onChanged: (_) {}),
-              loading: () => const CircularProgressIndicator(),
+            trailing: Switch(
+              value: darkTheme.value ?? false,
+              onChanged: systemTheme.value == true
+                  ? null
+                  : (value) {
+                      ref
+                          .read(darkThemeStateProvider.notifier)
+                          .toggleDarkMode();
+                    },
             ),
           ),
           const SettingsHeader(text: 'My Feed'),
