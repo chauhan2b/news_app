@@ -30,7 +30,7 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    const pageKey = ValueKey('search-results');
+    const pageKey = PageStorageKey('search-results');
     const duration = Duration(milliseconds: 300);
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -40,6 +40,8 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
           IconButton(
             onPressed: () async {
               await showDialogBox(context, ref);
+              // go to top when loading new articles
+              scrollController.jumpTo(0);
             },
             icon: const Icon(Icons.sort),
           )

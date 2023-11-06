@@ -18,7 +18,7 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    const pageKey = ValueKey('top-headlines');
+    const pageKey = PageStorageKey('top-headlines');
     const duration = Duration(milliseconds: 300);
     final size = MediaQuery.of(context).size;
 

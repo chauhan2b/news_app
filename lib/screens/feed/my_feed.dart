@@ -38,7 +38,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    const pageKey = ValueKey('my-feed');
+    const pageKey = PageStorageKey('my-feed');
     const duration = Duration(milliseconds: 300);
     final size = MediaQuery.of(context).size;
 
