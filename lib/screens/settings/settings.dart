@@ -19,60 +19,69 @@ class Settings extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: ListView(
-        // physics: const NeverScrollableScrollPhysics(),
-        children: [
-          const SettingsHeader(text: 'Theme'),
-          ListTile(
-            leading: const Icon(Icons.phone_android),
-            title: const Text(
-              'Follow System',
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-            trailing: Switch(
-              value: systemTheme.value ?? false,
-              onChanged: (value) {
-                ref.read(systemThemeStateProvider.notifier).toggleSystemTheme();
-              },
-            ),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(
+            maxWidth: 540, // centered container with max with for desktop
           ),
-          ListTile(
-            leading: darkTheme.value == true
-                ? const Icon(Icons.dark_mode)
-                : const Icon(
-                    Icons.dark_mode_outlined,
+          child: ListView(
+            // physics: const NeverScrollableScrollPhysics(),
+            children: [
+              const SettingsHeader(text: 'Theme'),
+              ListTile(
+                leading: const Icon(Icons.phone_android),
+                title: const Text(
+                  'Follow System',
+                  style: TextStyle(
+                    fontSize: 16.0,
                   ),
-            title: const Text(
-              'Dark Mode',
-              style: TextStyle(
-                fontSize: 16.0,
+                ),
+                trailing: Switch(
+                  value: systemTheme.value ?? false,
+                  onChanged: (value) {
+                    ref
+                        .read(systemThemeStateProvider.notifier)
+                        .toggleSystemTheme();
+                  },
+                ),
               ),
-            ),
-            trailing: Switch(
-              value: darkTheme.value ?? false,
-              onChanged: systemTheme.value == true
-                  ? null
-                  : (value) {
-                      ref
-                          .read(darkThemeStateProvider.notifier)
-                          .toggleDarkMode();
-                    },
-            ),
+              ListTile(
+                leading: darkTheme.value == true
+                    ? const Icon(Icons.dark_mode)
+                    : const Icon(
+                        Icons.dark_mode_outlined,
+                      ),
+                title: const Text(
+                  'Dark Mode',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                trailing: Switch(
+                  value: darkTheme.value ?? false,
+                  onChanged: systemTheme.value == true
+                      ? null
+                      : (value) {
+                          ref
+                              .read(darkThemeStateProvider.notifier)
+                              .toggleDarkMode();
+                        },
+                ),
+              ),
+              const SettingsHeader(text: 'My Feed'),
+              ListTile(
+                leading: const Icon(Icons.newspaper_outlined),
+                title: const Text('Manage sources'),
+                onTap: () {
+                  context.pushNamed(AppRoute.manageSources.name);
+                },
+              ),
+              const SettingsHeader(text: 'Top Headlines'),
+              const CountryDropdown(),
+              const CategoryDropdown(),
+            ],
           ),
-          const SettingsHeader(text: 'My Feed'),
-          ListTile(
-            leading: const Icon(Icons.newspaper_outlined),
-            title: const Text('Manage sources'),
-            onTap: () {
-              context.pushNamed(AppRoute.manageSources.name);
-            },
-          ),
-          const SettingsHeader(text: 'Top Headlines'),
-          const CountryDropdown(),
-          const CategoryDropdown(),
-        ],
+        ),
       ),
     );
   }
