@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class SettingsHeader extends StatelessWidget {
   const SettingsHeader({
-    Key? key,
+    super.key,
     required this.text,
-  }) : super(key: key);
+  });
   final String text;
 
   @override
