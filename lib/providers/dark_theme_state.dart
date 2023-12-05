@@ -34,7 +34,7 @@ class DarkThemeState extends _$DarkThemeState {
 class SystemThemeState extends _$SystemThemeState {
   Future<bool> _loadSystemThemeState() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(systemTheme) ?? false;
+    return prefs.getBool(systemTheme) ?? true;
   }
 
   void _saveSystemThemeState(bool value) async {
