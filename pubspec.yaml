@@ -7,7 +7,10 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
+  cloud_firestore: ^4.13.3
   dynamic_color: ^1.6.8
+  firebase_auth: ^4.15.0
+  firebase_core: ^2.24.0
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.4.5
