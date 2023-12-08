@@ -6,6 +6,8 @@ import 'package:news_app/screens/feed/search_results.dart';
 import 'package:news_app/screens/settings/settings.dart';
 import 'package:news_app/screens/headlines/top_headlines.dart';
 
+import '../repositories/auth_repository.dart';
+import '../screens/auth/login_screen.dart';
 import '../screens/home_screen.dart';
 
 enum AppRoute {
@@ -15,12 +17,18 @@ enum AppRoute {
   settings,
   searchResults,
   manageSources,
+  loginScreen,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/home-screen',
     routes: [
+      GoRoute(
+        name: AppRoute.loginScreen.name,
+        path: '/login',
+        builder: (context, state) => LoginScreen(),
+      ),
       GoRoute(
         name: AppRoute.homeScreen.name,
         path: '/home-screen',
@@ -59,5 +67,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
     ],
+    redirect: (context, state) {
+      final authState = ref.watch(authStateChangesProvider);
+      if (authState.value == null) {
+        return '/login';
+      } else if (authState.value != null && state.uri.path == '/login') {
+        return '/home-screen';
+      } else {
+        return null;
+      }
+    },
   );
 });
