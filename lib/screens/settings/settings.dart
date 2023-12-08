@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/common/settings_header.dart';
+import 'package:news_app/controller/auth_sign_out_controller.dart';
 import 'package:news_app/providers/dark_theme_state.dart';
 import 'package:news_app/screens/settings/widgets/category_dropdown.dart';
 import 'package:news_app/screens/settings/widgets/country_dropdown.dart';
 
+import '../../repositories/auth_repository.dart';
 import '../../routing/router.dart';
 
 class Settings extends ConsumerWidget {
@@ -15,9 +17,45 @@ class Settings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final darkTheme = ref.watch(darkThemeStateProvider);
     final systemTheme = ref.watch(systemThemeStateProvider);
+    final signOut = ref.watch(authSignOutControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        actions: [
+          signOut.isLoading
+              ? const CircularProgressIndicator()
+              : IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Sign out?'),
+                          content:
+                              const Text('Are you sure you want to sign out?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => context.pop(),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                ref
+                                    .read(
+                                        authSignOutControllerProvider.notifier)
+                                    .signOut();
+                                context.pop();
+                              },
+                              child: const Text('Sign Out'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                )
+        ],
       ),
       body: Center(
         child: Container(
