@@ -172,6 +172,7 @@ class LoginScreen extends ConsumerWidget {
                           ref
                               .read(registerStateProvider.notifier)
                               .toggleRegister();
+                          // reset errors when switching between login and register
                           _formKey.currentState!.reset();
                         },
                         child: Text(
