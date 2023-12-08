@@ -51,6 +51,10 @@ class AuthRepository {
       throw Exception('Some error occurred. Please try again.');
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }
 
 @Riverpod(keepAlive: true)

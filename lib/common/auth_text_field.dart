@@ -10,6 +10,7 @@ class AuthTextField extends StatelessWidget {
     this.keyboardType,
     required this.name,
     this.validator,
+    this.onSubmitted,
   });
   final TextEditingController controller;
   final String title;
@@ -17,6 +18,7 @@ class AuthTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String name;
   final FormFieldValidator<String?>? validator;
+  final void Function(String?)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class AuthTextField extends StatelessWidget {
         ),
       ),
       validator: validator,
+      onSubmitted: onSubmitted,
     );
   }
 }

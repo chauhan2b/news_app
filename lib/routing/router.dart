@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/screens/auth/password_reset_screen.dart';
 import 'package:news_app/screens/settings/manage_sources.dart';
 import 'package:news_app/screens/feed/my_feed.dart';
 import 'package:news_app/screens/feed/search_results.dart';
@@ -18,6 +19,7 @@ enum AppRoute {
   searchResults,
   manageSources,
   loginScreen,
+  passwordReset,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -25,10 +27,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/home-screen',
     routes: [
       GoRoute(
-        name: AppRoute.loginScreen.name,
-        path: '/login',
-        builder: (context, state) => LoginScreen(),
-      ),
+          name: AppRoute.loginScreen.name,
+          path: '/login',
+          builder: (context, state) => LoginScreen(),
+          routes: [
+            GoRoute(
+              name: AppRoute.passwordReset.name,
+              path: 'password-reset',
+              builder: (context, state) => PasswordResetScreen(),
+            ),
+          ]),
       GoRoute(
         name: AppRoute.homeScreen.name,
         path: '/home-screen',
@@ -69,6 +77,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     ],
     redirect: (context, state) {
       final authState = ref.watch(authStateChangesProvider);
+
+      // this allows user to go to password reset screen if user is not logged in
+      if (state.uri.path == '/login/password-reset') {
+        return '/login/password-reset';
+      }
+
       if (authState.value == null) {
         return '/login';
       } else if (authState.value != null && state.uri.path == '/login') {

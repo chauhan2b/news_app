@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:news_app/controller/auth_sign_in_controller.dart';
 import 'package:news_app/providers/register_state.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:news_app/routing/router.dart';
 
 import '../../common/auth_text_field.dart';
 
@@ -124,7 +125,9 @@ class LoginScreen extends ConsumerWidget {
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(AppRoute.passwordReset.name);
+                        },
                         child: Text(
                           'Forgot password?',
                           style: TextStyle(
