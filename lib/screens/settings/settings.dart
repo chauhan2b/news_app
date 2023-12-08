@@ -7,7 +7,6 @@ import 'package:news_app/providers/dark_theme_state.dart';
 import 'package:news_app/screens/settings/widgets/category_dropdown.dart';
 import 'package:news_app/screens/settings/widgets/country_dropdown.dart';
 
-import '../../repositories/auth_repository.dart';
 import '../../routing/router.dart';
 
 class Settings extends ConsumerWidget {
