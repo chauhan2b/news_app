@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/screens/auth/password_reset_screen.dart';
+import 'package:news_app/screens/profile/my_profile_screen.dart';
 import 'package:news_app/screens/settings/manage_sources.dart';
 import 'package:news_app/screens/feed/my_feed.dart';
 import 'package:news_app/screens/feed/search_results.dart';
@@ -20,6 +21,7 @@ enum AppRoute {
   manageSources,
   loginScreen,
   passwordReset,
+  myProfile,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -67,6 +69,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/settings',
         builder: (context, state) => const Settings(),
         routes: [
+          GoRoute(
+            name: AppRoute.myProfile.name,
+            path: 'my-profile',
+            builder: (context, state) => const MyProfileScreen(),
+          ),
           GoRoute(
             name: AppRoute.manageSources.name,
             path: 'manage-sources',
