@@ -8,7 +8,7 @@ part 'domains_state.g.dart';
 class Domains extends _$Domains {
   Future<List<String>> _loadDomains() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(userDomains) ?? [];
+    return prefs.getStringList(userDomains) ?? ['ign.com'];
   }
 
   void _saveDomains(List<String> domains) async {
