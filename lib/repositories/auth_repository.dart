@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_repository.g.dart';
 
 class AuthRepository {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final _firebaseAuth = FirebaseAuth.instance;
+  final _firebaseFirestore = FirebaseFirestore.instance;
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
@@ -18,14 +20,14 @@ class AuthRepository {
       // email enumeration is on by default, which improves security by not providing
       // extensive error messages, so only the first condition is used
       if (e.code == 'invalid-credential') {
-        throw Exception('Email or password is incorrect');
+        throw ('Email or password is incorrect. Please try again.');
       } else if (e.code == 'wrong-password') {
-        throw Exception('Provided password is incorrect.');
+        throw ('Provided password is incorrect.');
       } else if (e.code == 'user-not-found') {
-        throw Exception('User not found for that email.');
+        throw ('User not found for that email.');
       }
     } catch (e) {
-      throw Exception('Some error occurred. Please try again.');
+      throw ('Some error occurred. Please try again.');
     }
   }
 
@@ -35,12 +37,23 @@ class AuthRepository {
         email: email,
         password: password,
       );
+
+      // store user profile data with one default domain
+      await _firebaseFirestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .set({
+        'email': email,
+        'username': email.split('@')[0],
+        'profilePicture': 'https://picsum.photos/200',
+        'domains': ['ign.com'],
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        throw Exception('The account already exists for that email.');
+        throw ('The account already exists for that email. Please login.');
       }
     } catch (e) {
-      throw Exception('Some error occurred. Please try again.');
+      throw ('Some error occurred. Please try again.');
     }
   }
 
@@ -48,7 +61,7 @@ class AuthRepository {
     try {
       await _firebaseAuth.signOut();
     } catch (e) {
-      throw Exception('Some error occurred. Please try again.');
+      throw ('Some error occurred. Please try again.');
     }
   }
 
