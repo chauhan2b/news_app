@@ -7,13 +7,14 @@ class ManageSources extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final domainsFuture = ref.watch(domainsProvider);
+    final asyncDomains = ref.watch(domainsProvider);
     final controller = TextEditingController();
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Your sources'),
         ),
-        body: domainsFuture.when(
+        body: asyncDomains.when(
           data: (domains) => CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
