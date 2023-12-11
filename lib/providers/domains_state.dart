@@ -1,41 +1,42 @@
-import 'package:news_app/constants/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'domains_state.g.dart';
 
 @Riverpod(keepAlive: true)
 class Domains extends _$Domains {
-  Future<List<String>> _loadDomains() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(userDomains) ?? ['ign.com'];
-  }
+  final _db = FirebaseFirestore.instance;
+  final _uid = FirebaseAuth.instance.currentUser!.uid;
 
-  void _saveDomains(List<String> domains) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(userDomains, domains);
+  Future<List<String>> _fetchDomains() async {
+    final domainsRef = _db.collection('users').doc(_uid);
+    return domainsRef.get().then((value) {
+      return List.from(value.data()!['domains']);
+    });
   }
 
   @override
   Future<List<String>> build() async {
-    // fetch user's saved domains
-    // we have to use async because we need to wait for _loadDomains
-    return _loadDomains();
+    // fetch user's saved domains from firebase
+    return _fetchDomains();
   }
 
   void add(String domain) async {
     state = const AsyncValue.loading();
-    List<String> domains = await _loadDomains();
-    domains = [...domains, domain];
-    _saveDomains(domains);
-    state = await AsyncValue.guard(() => _loadDomains());
+    final domainsRef = _db.collection('users').doc(_uid);
+    domainsRef.update({
+      'domains': FieldValue.arrayUnion([domain])
+    });
+    state = await AsyncValue.guard(() => _fetchDomains());
   }
 
   void remove(String domain) async {
     state = const AsyncValue.loading();
-    List<String> domains = await _loadDomains();
-    domains = domains.where((element) => element != domain).toList();
-    _saveDomains(domains);
-    state = await AsyncValue.guard(() => _loadDomains());
+    final domainsRef = _db.collection('users').doc(_uid);
+    domainsRef.update({
+      'domains': FieldValue.arrayRemove([domain])
+    });
+    state = await AsyncValue.guard(() => _fetchDomains());
   }
 }
