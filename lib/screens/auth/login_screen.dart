@@ -47,7 +47,7 @@ class LoginScreen extends ConsumerWidget {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Error'),
+            title: Text(isRegister ? 'Register failed' : 'Login failed'),
             content: Text(state.error.toString()),
             actions: [
               TextButton(
@@ -173,7 +173,7 @@ class LoginScreen extends ConsumerWidget {
                               .read(registerStateProvider.notifier)
                               .toggleRegister();
                           // reset errors when switching between login and register
-                          _formKey.currentState!.reset();
+                          // _formKey.currentState!.reset();
                         },
                         child: Text(
                           isRegister ? 'Login' : 'Register',
