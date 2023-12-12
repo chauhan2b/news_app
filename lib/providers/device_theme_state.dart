@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
 
-part 'dark_theme_state.g.dart';
+part 'device_theme_state.g.dart';
 
 @riverpod
 class DarkThemeState extends _$DarkThemeState {
@@ -52,5 +52,30 @@ class SystemThemeState extends _$SystemThemeState {
     bool value = await _loadSystemThemeState();
     _saveSystemThemeState(!value);
     state = await AsyncValue.guard(() => _loadSystemThemeState());
+  }
+}
+
+@riverpod
+class MaterialYouState extends _$MaterialYouState {
+  Future<bool> _loadMaterialYouState() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(materialYouPreference) ?? true;
+  }
+
+  void _saveMaterialYouState(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(materialYouPreference, value);
+  }
+
+  @override
+  Future<bool> build() async {
+    return _loadMaterialYouState();
+  }
+
+  void toggleMaterialYou() async {
+    state = const AsyncValue.loading();
+    bool value = await _loadMaterialYouState();
+    _saveMaterialYouState(!value);
+    state = await AsyncValue.guard(() => _loadMaterialYouState());
   }
 }

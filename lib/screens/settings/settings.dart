@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/common/settings_header.dart';
-import 'package:news_app/providers/dark_theme_state.dart';
+import 'package:news_app/providers/device_theme_state.dart';
 import 'package:news_app/screens/settings/widgets/category_dropdown.dart';
 import 'package:news_app/screens/settings/widgets/country_dropdown.dart';
 
@@ -15,6 +15,7 @@ class Settings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final darkTheme = ref.watch(darkThemeStateProvider);
     final systemTheme = ref.watch(systemThemeStateProvider);
+    final materialYou = ref.watch(materialYouStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,6 +83,24 @@ class Settings extends ConsumerWidget {
                               .read(darkThemeStateProvider.notifier)
                               .toggleDarkMode();
                         },
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.phone_android),
+                title: const Text(
+                  'Material You',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                subtitle: const Text('Use colors from wallpaper'),
+                trailing: Switch(
+                  value: materialYou.value ?? true,
+                  onChanged: (value) {
+                    ref
+                        .read(materialYouStateProvider.notifier)
+                        .toggleMaterialYou();
+                  },
                 ),
               ),
               const SettingsHeader(text: 'My Feed'),
