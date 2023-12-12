@@ -86,7 +86,7 @@ class Settings extends ConsumerWidget {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.phone_android),
+                leading: const Icon(Icons.water),
                 title: const Text(
                   'Material You',
                   style: TextStyle(
