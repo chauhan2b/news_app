@@ -6,6 +6,7 @@ class AuthTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.title,
+    this.autofocus = false,
     this.obscureText = false,
     this.keyboardType,
     required this.name,
@@ -14,6 +15,7 @@ class AuthTextField extends StatelessWidget {
   });
   final TextEditingController controller;
   final String title;
+  final bool autofocus;
   final bool obscureText;
   final TextInputType? keyboardType;
   final String name;
@@ -25,6 +27,7 @@ class AuthTextField extends StatelessWidget {
     return FormBuilderTextField(
       name: name,
       controller: controller,
+      autofocus: autofocus,
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(

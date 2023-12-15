@@ -26,6 +26,7 @@ class PasswordResetScreen extends ConsumerWidget {
               key: _formKey,
               child: AuthTextField(
                 controller: _controller,
+                autofocus: true,
                 name: 'passwordResetEmail',
                 title: 'Email',
                 keyboardType: TextInputType.emailAddress,
