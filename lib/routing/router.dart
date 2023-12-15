@@ -25,8 +25,11 @@ enum AppRoute {
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
+  final authState = ref.read(authStateChangesProvider);
+  final isLoggedIn = authState.value != null;
+
   return GoRouter(
-    initialLocation: '/home-screen',
+    initialLocation: isLoggedIn ? '/home-screen' : '/login',
     routes: [
       GoRoute(
           name: AppRoute.loginScreen.name,
@@ -83,6 +86,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) {
+      print(state.uri.path);
+
       final authState = ref.watch(authStateChangesProvider);
       final isLoggedIn = authState.value != null;
 
