@@ -139,7 +139,7 @@ class LoginScreen extends ConsumerWidget {
                   const SizedBox(height: 16.0),
                   authController.isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : ElevatedButton(
+                      : FilledButton(
                           onPressed: () => isRegister ? register() : signIn(),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(
