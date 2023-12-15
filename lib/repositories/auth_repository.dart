@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -20,7 +22,7 @@ class AuthRepository {
       // email enumeration is on by default, which improves security by not providing
       // extensive error messages, so only the first condition is used
       if (e.code == 'invalid-credential') {
-        throw ('Email or password is incorrect. Please try again.');
+        throw ('Email or password is incorrect.');
       } else if (e.code == 'wrong-password') {
         throw ('Provided password is incorrect.');
       } else if (e.code == 'user-not-found') {
@@ -66,7 +68,11 @@ class AuthRepository {
   }
 
   Future<void> resetPassword(String email) async {
-    await _firebaseAuth.sendPasswordResetEmail(email: email);
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw ('Error sending email');
+    }
   }
 }
 
