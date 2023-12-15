@@ -36,7 +36,15 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your results'),
+        title: ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Showing results for'),
+          subtitle: Text(
+            widget.query,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () async {
