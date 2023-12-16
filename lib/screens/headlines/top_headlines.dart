@@ -20,7 +20,6 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
     final scrollController = ScrollController();
     const pageKey = PageStorageKey('top-headlines');
     const duration = Duration(milliseconds: 300);
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,55 +53,68 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
             await Future.delayed(const Duration(seconds: 1));
             return await ref.refresh(topHeadlinesFutureProvider(page: 1));
           },
-          child: ListView.custom(
-            key: pageKey,
-            controller: scrollController,
-            childrenDelegate: SliverChildBuilderDelegate(
-              (context, index) {
-                // when index exceeds pageSize, page will increase by 1
-                final page = index ~/ pageSize + 1;
-                final indexInPage = index % pageSize;
+          child: LayoutBuilder(builder: (context, constraints) {
+            return ListView.custom(
+              key: pageKey,
+              controller: scrollController,
+              childrenDelegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  // when index exceeds pageSize, page will increase by 1
+                  final page = index ~/ pageSize + 1;
+                  final indexInPage = index % pageSize;
 
-                final headlines =
-                    ref.watch(topHeadlinesFutureProvider(page: page));
+                  final headlines =
+                      ref.watch(topHeadlinesFutureProvider(page: page));
 
-                return headlines.when(
-                  data: (headlines) {
-                    if (indexInPage >= headlines.length) {
-                      return null;
-                    }
+                  return headlines.when(
+                    data: (headlines) {
+                      if (indexInPage >= headlines.length) {
+                        return null;
+                      }
 
-                    final headline = headlines[indexInPage];
-                    return Column(
-                      children: [
-                        ArticleCard(article: headline),
-                        const Divider(indent: 12.0, endIndent: 12.0),
-                      ],
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    if (index > 0) {
-                      return null;
-                    }
+                      final headline = headlines[indexInPage];
+                      return Column(
+                        children: [
+                          ArticleCard(article: headline),
+                          const Divider(indent: 12.0, endIndent: 12.0),
+                        ],
+                      );
+                    },
+                    error: (error, stackTrace) {
+                      if (index > 0) {
+                        return null;
+                      }
 
-                    return Center(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.4),
-                        child: Text(
-                          error.toString(),
-                          textAlign: TextAlign.center,
+                      return Container(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
                         ),
-                      ),
-                    );
-                  },
-                  loading: () {
-                    return const ArticleLoadingShimmer();
-                  },
-                );
-              },
-            ),
-          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              error.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                return ref.refresh(
+                                    topHeadlinesFutureProvider(page: 1));
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    loading: () {
+                      return const ArticleLoadingShimmer();
+                    },
+                  );
+                },
+              ),
+            );
+          }),
         ),
       ),
       floatingActionButton: AnimatedSlide(

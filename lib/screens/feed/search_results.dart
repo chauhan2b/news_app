@@ -84,79 +84,92 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
 
           return true;
         },
-        child: ListView.custom(
-          key: pageKey,
-          controller: scrollController,
-          // semanticChildCount: 99,
-          childrenDelegate: SliverChildBuilderDelegate(
-            (context, index) {
-              // when index exceeds pageSize, page will increase by 1
-              final page = index ~/ pageSize + 1;
-              final indexInPage = index % pageSize;
+        child: LayoutBuilder(builder: (context, constraints) {
+          return ListView.custom(
+            key: pageKey,
+            controller: scrollController,
+            // semanticChildCount: 99,
+            childrenDelegate: SliverChildBuilderDelegate(
+              (context, index) {
+                // when index exceeds pageSize, page will increase by 1
+                final page = index ~/ pageSize + 1;
+                final indexInPage = index % pageSize;
 
-              final articles = ref.watch(
-                  searchResultsProvider(query: widget.query, page: page));
+                final articles = ref.watch(
+                    searchResultsProvider(query: widget.query, page: page));
 
-              return articles.when(
-                data: (articles) {
-                  if (articles.isEmpty) {
+                return articles.when(
+                  data: (articles) {
+                    if (articles.isEmpty) {
+                      if (index > 0) {
+                        return null;
+                      }
+
+                      return Center(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: size.height * 0.4),
+                          child: const Column(
+                            children: [
+                              Icon(Icons.error),
+                              SizedBox(height: 8.0),
+                              Text(
+                                'No results found',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    if (indexInPage >= articles.length) {
+                      return null;
+                    }
+
+                    final article = articles[indexInPage];
+                    return Column(
+                      children: [
+                        ArticleCard(article: article),
+                        const Divider(indent: 12.0, endIndent: 12.0),
+                      ],
+                    );
+                  },
+                  error: (error, stackTrace) {
                     if (index > 0) {
                       return null;
                     }
 
-                    return Center(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.4),
-                        child: const Column(
-                          children: [
-                            Icon(Icons.error),
-                            SizedBox(height: 8.0),
-                            Text(
-                              'No results found',
-                              style: TextStyle(fontSize: 18.0),
-                            ),
-                          ],
-                        ),
+                    return Container(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            error.toString(),
+                            textAlign: TextAlign.center,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              return ref.refresh(searchResultsProvider(
+                                  query: widget.query, page: 1));
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
                       ),
                     );
-                  }
-
-                  if (indexInPage >= articles.length) {
-                    return null;
-                  }
-
-                  final article = articles[indexInPage];
-                  return Column(
-                    children: [
-                      ArticleCard(article: article),
-                      const Divider(indent: 12.0, endIndent: 12.0),
-                    ],
-                  );
-                },
-                error: (error, stackTrace) {
-                  if (index > 0) {
-                    return null;
-                  }
-
-                  return Center(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: size.height * 0.4),
-                      child: Text(
-                        error.toString(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                },
-                loading: () {
-                  return const ArticleLoadingShimmer();
-                },
-              );
-            },
-          ),
-        ),
+                  },
+                  loading: () {
+                    return const ArticleLoadingShimmer();
+                  },
+                );
+              },
+            ),
+          );
+        }),
       ),
       floatingActionButton: AnimatedSlide(
         duration: duration,

@@ -40,7 +40,6 @@ class _MyFeedState extends ConsumerState<MyFeed> {
     final scrollController = ScrollController();
     const pageKey = PageStorageKey('my-feed');
     const duration = Duration(milliseconds: 300);
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -121,53 +120,67 @@ class _MyFeedState extends ConsumerState<MyFeed> {
             await Future.delayed(const Duration(seconds: 1));
             return ref.refresh(newsListFutureProvider(page: 1));
           },
-          child: ListView.custom(
-            key: pageKey,
-            controller: scrollController,
-            // semanticChildCount: 99,
-            childrenDelegate: SliverChildBuilderDelegate(
-              (context, index) {
-                // when index exceeds pageSize, page will increase by 1
-                final page = index ~/ pageSize + 1;
-                final indexInPage = index % pageSize;
+          child: LayoutBuilder(
+            builder: (context, constraints) => ListView.custom(
+              key: pageKey,
+              controller: scrollController,
+              // semanticChildCount: 99,
+              childrenDelegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  // when index exceeds pageSize, page will increase by 1
+                  final page = index ~/ pageSize + 1;
+                  final indexInPage = index % pageSize;
 
-                final articles = ref.watch(newsListFutureProvider(page: page));
+                  final articles =
+                      ref.watch(newsListFutureProvider(page: page));
 
-                return articles.when(
-                  data: (articles) {
-                    if (indexInPage >= articles.length) {
-                      return null;
-                    }
+                  return articles.when(
+                    data: (articles) {
+                      if (indexInPage >= articles.length) {
+                        return null;
+                      }
 
-                    final article = articles[indexInPage];
-                    return Column(
-                      children: [
-                        ArticleCard(article: article),
-                        const Divider(indent: 12.0, endIndent: 12.0),
-                      ],
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    if (index > 0) {
-                      return null;
-                    }
+                      final article = articles[indexInPage];
+                      return Column(
+                        children: [
+                          ArticleCard(article: article),
+                          const Divider(indent: 12.0, endIndent: 12.0),
+                        ],
+                      );
+                    },
+                    error: (error, stackTrace) {
+                      if (index > 0) {
+                        return null;
+                      }
 
-                    return Center(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.4),
-                        child: Text(
-                          error.toString(),
-                          textAlign: TextAlign.center,
+                      return Container(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
                         ),
-                      ),
-                    );
-                  },
-                  loading: () {
-                    return const ArticleLoadingShimmer();
-                  },
-                );
-              },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              error.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                return ref
+                                    .refresh(newsListFutureProvider(page: 1));
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    loading: () {
+                      return const ArticleLoadingShimmer();
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),
