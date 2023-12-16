@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/models/article.dart';
+import 'package:news_app/providers/bookmark_state.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,6 +19,40 @@ class ArticleCard extends ConsumerWidget {
         DateTime.now().difference(article.publishedDate ?? DateTime.now());
     final articleDate = DateTime.now().subtract(dateTime);
     return InkWell(
+      onLongPress: () {
+        showModalBottomSheet(
+          showDragHandle: true,
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.only(
+              left: 24.0,
+              right: 24.0,
+              bottom: 24.0,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const Text(
+                    'Summary (Beta)',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                  const Divider(),
+                  Text(
+                    article.summary == null || article.summary!.isEmpty
+                        ? 'No summary found'
+                        : article.summary!.replaceAll('\n', ''),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
       onTap: article.link == null || article.link!.isEmpty
           ? null
           : () async {
@@ -107,35 +142,11 @@ class ArticleCard extends ConsumerWidget {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.newspaper),
+                  icon: const Icon(Icons.bookmark_outline),
                   onPressed: () {
-                    showModalBottomSheet(
-                      showDragHandle: true,
-                      context: context,
-                      builder: (context) => Padding(
-                        padding: const EdgeInsets.only(
-                          left: 24.0,
-                          right: 24.0,
-                          bottom: 24.0,
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Summary (Beta)',
-                              style: TextStyle(fontSize: 18.0),
-                            ),
-                            const Divider(),
-                            Text(
-                              article.summary == null ||
-                                      article.summary!.isEmpty
-                                  ? 'No summary found'
-                                  : article.summary!.replaceAll('\n', ''),
-                              textAlign: TextAlign.justify,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+                    ref
+                        .read(bookmarkStateProvider.notifier)
+                        .bookmarkArticle(article);
                   },
                 ),
                 IconButton(
