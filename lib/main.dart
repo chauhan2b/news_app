@@ -18,15 +18,15 @@ void main() async {
   );
 
   // use firebase emulator if app is in debug mode
-  if (kDebugMode) {
-    try {
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
-    }
-  }
+  // if (kDebugMode) {
+  //   try {
+  //     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  //   } catch (e) {
+  //     // ignore: avoid_print
+  //     print(e);
+  //   }
+  // }
 
   // keeps device in portrait mode
   SystemChrome.setPreferredOrientations([
