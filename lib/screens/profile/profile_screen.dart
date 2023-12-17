@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/routing/router.dart';
 
 import '../../controller/auth_sign_out_controller.dart';
 import '../../providers/profile_state.dart';
@@ -11,6 +12,15 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncProfile = ref.watch(profileStateProvider);
+
+    void signOut() {
+      ref.read(authSignOutControllerProvider.notifier).signOut();
+
+      if (context.mounted) {
+        context.pushReplacementNamed(AppRoute.loginScreen.name);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Profile'),
@@ -30,12 +40,7 @@ class ProfileScreen extends ConsumerWidget {
                         child: const Text('Cancel'),
                       ),
                       TextButton(
-                        onPressed: () {
-                          ref
-                              .read(authSignOutControllerProvider.notifier)
-                              .signOut();
-                          context.pop();
-                        },
+                        onPressed: signOut,
                         child: const Text('Sign Out'),
                       ),
                     ],

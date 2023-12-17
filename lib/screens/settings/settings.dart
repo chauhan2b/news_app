@@ -41,7 +41,7 @@ class Settings extends ConsumerWidget {
                 leading: const Icon(Icons.bookmarks_outlined),
                 title: const Text('My Bookmarks'),
                 onTap: () {
-                  // add route
+                  context.pushNamed(AppRoute.bookmarkScreen.name);
                 },
               ),
               const SettingsHeader(text: 'Theme'),

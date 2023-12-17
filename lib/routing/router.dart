@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/screens/auth/password_reset_screen.dart';
+import 'package:news_app/screens/profile/bookmark_screen.dart';
 import 'package:news_app/screens/profile/profile_screen.dart';
 import 'package:news_app/screens/settings/manage_sources.dart';
 import 'package:news_app/screens/feed/my_feed.dart';
@@ -22,10 +23,11 @@ enum AppRoute {
   loginScreen,
   passwordReset,
   myProfile,
+  bookmarkScreen,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
-  final authState = ref.read(authStateChangesProvider);
+  final authState = ref.watch(authStateChangesProvider);
   final isLoggedIn = authState.value != null;
 
   return GoRouter(
@@ -82,27 +84,34 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: 'manage-sources',
             builder: (context, state) => const ManageSources(),
           ),
+          GoRoute(
+            name: AppRoute.bookmarkScreen.name,
+            path: 'bookmark-screen',
+            builder: (context, state) => const BookmarkScreen(),
+          ),
         ],
       ),
     ],
     redirect: (context, state) {
-      print(state.uri.path);
+      return null;
 
-      final authState = ref.watch(authStateChangesProvider);
-      final isLoggedIn = authState.value != null;
+      // print(state.uri.path);
 
-      // this allows user to go to password reset screen if user is not logged in
-      if (state.uri.path == '/login/password-reset') {
-        return '/login/password-reset';
-      }
+      // final authState = ref.read(authStateChangesProvider);
+      // final isLoggedIn = authState.value != null;
 
-      if (!isLoggedIn) {
-        return '/login';
-      } else if (isLoggedIn && state.uri.path == '/login') {
-        return '/home-screen';
-      } else {
-        return null;
-      }
+      // // this allows user to go to password reset screen if user is not logged in
+      // if (state.uri.path == '/login/password-reset') {
+      //   return '/login/password-reset';
+      // }
+
+      // if (!isLoggedIn) {
+      //   return '/login';
+      // } else if (isLoggedIn && state.uri.path == '/login') {
+      //   return '/home-screen';
+      // } else {
+      //   return null;
+      // }
     },
   );
 });
