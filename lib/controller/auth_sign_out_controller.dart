@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app/providers/category_state.dart';
 import 'package:news_app/providers/country_state.dart';
 import 'package:news_app/providers/domains_state.dart';
@@ -19,13 +20,14 @@ class AuthSignOutController extends _$AuthSignOutController {
     final authRepository = ref.read(authRepositoryProvider);
     state = const AsyncValue.loading();
 
-    // dispose all providers
+    // sign out
+    state = await AsyncValue.guard(() => authRepository.signOut());
+
+    // destroy all providers
     ref.invalidate(categoryStateProvider);
     ref.invalidate(countriesStateProvider);
     ref.invalidate(domainsProvider);
     ref.invalidate(sortByStateProvider);
-
-    // sign out
-    state = await AsyncValue.guard(() => authRepository.signOut());
+    ref.invalidate(authStateChangesProvider);
   }
 }

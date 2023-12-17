@@ -28,6 +28,10 @@ class LoginScreen extends ConsumerWidget {
               _emailController.text.trim(),
               _passwordController.text.trim(),
             );
+
+        if (context.mounted) {
+          context.pushReplacementNamed(AppRoute.homeScreen.name);
+        }
       }
     }
 
@@ -38,6 +42,10 @@ class LoginScreen extends ConsumerWidget {
               _passwordController.text.trim(),
               _confirmPasswordController.text.trim(),
             );
+
+        if (context.mounted) {
+          context.pushReplacementNamed(AppRoute.homeScreen.name);
+        }
       }
     }
 
