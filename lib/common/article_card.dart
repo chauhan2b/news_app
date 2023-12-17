@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/models/article.dart';
-import 'package:news_app/providers/bookmark_state.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -143,11 +142,7 @@ class ArticleCard extends ConsumerWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.bookmark_outline),
-                  onPressed: () {
-                    ref
-                        .read(bookmarkStateProvider.notifier)
-                        .bookmarkArticle(article);
-                  },
+                  onPressed: () {},
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
