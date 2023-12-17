@@ -49,10 +49,9 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
           return true;
         },
         child: RefreshIndicator(
-          onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 1));
-            return await ref.refresh(topHeadlinesFutureProvider(page: 1));
-          },
+          onRefresh: () async => ref.refresh(
+            topHeadlinesFutureProvider(page: 1).future,
+          ),
           child: LayoutBuilder(builder: (context, constraints) {
             return ListView.custom(
               key: pageKey,
@@ -97,10 +96,9 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlines> {
                               textAlign: TextAlign.center,
                             ),
                             TextButton(
-                              onPressed: () {
-                                return ref.refresh(
-                                    topHeadlinesFutureProvider(page: 1));
-                              },
+                              onPressed: () async => ref.refresh(
+                                topHeadlinesFutureProvider(page: 1).future,
+                              ),
                               child: const Text('Retry'),
                             ),
                           ],

@@ -116,10 +116,9 @@ class _MyFeedState extends ConsumerState<MyFeed> {
           return true;
         },
         child: RefreshIndicator(
-          onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 1));
-            return ref.refresh(newsListFutureProvider(page: 1));
-          },
+          onRefresh: () async => ref.refresh(
+            newsListFutureProvider(page: 1).future,
+          ),
           child: LayoutBuilder(
             builder: (context, constraints) => ListView.custom(
               key: pageKey,
@@ -165,10 +164,9 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                               textAlign: TextAlign.center,
                             ),
                             TextButton(
-                              onPressed: () {
-                                return ref
-                                    .refresh(newsListFutureProvider(page: 1));
-                              },
+                              onPressed: () async => ref.refresh(
+                                newsListFutureProvider(page: 1).future,
+                              ),
                               child: const Text('Retry'),
                             ),
                           ],
