@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/core/common/article_card.dart';
 import 'package:news_app/core/common/article_loading_shimmer.dart';
-import 'package:news_app/core/features/feed/data/domains_provider.dart';
 import 'package:news_app/core/features/feed/data/feed_provider.dart';
 import 'package:news_app/core/routing/router.dart';
 

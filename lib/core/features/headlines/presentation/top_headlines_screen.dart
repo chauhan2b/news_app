@@ -3,8 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/core/common/article_card.dart';
 import 'package:news_app/core/common/article_loading_shimmer.dart';
-import 'package:news_app/core/features/headlines/data/headline_category_provider.dart';
-import 'package:news_app/core/features/headlines/data/headline_country_provider.dart';
 import 'package:news_app/core/features/headlines/data/headlines_provider.dart';
 
 import '../../../constants/constants.dart';
