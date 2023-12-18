@@ -1,10 +1,11 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/constants/app_theme.dart';
-import 'package:news_app/providers/device_theme_state.dart';
+import 'package:news_app/core/theme/device_theme_provider.dart';
 
-import 'package:news_app/routing/router.dart';
+import 'package:news_app/core/routing/router.dart';
+
+import 'core/constants/app_theme.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({
@@ -14,9 +15,9 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
-    final darkMode = ref.watch(darkThemeStateProvider);
-    final systemTheme = ref.watch(systemThemeStateProvider);
-    final materialYou = ref.watch(materialYouStateProvider);
+    final darkMode = ref.watch(darkModeProvider);
+    final systemTheme = ref.watch(systemThemeProvider);
+    final materialYou = ref.watch(materialYouProvider);
     final appTheme = ref.watch(appThemeProvider);
 
     return DynamicColorBuilder(
