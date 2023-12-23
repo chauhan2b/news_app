@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app/core/features/bookmarks/data/bookmarks_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../features/article/article.dart';
+import '../features/bookmarks/domain/bookmark.dart';
 
 class ArticleCard extends ConsumerWidget {
   final Article article;
@@ -143,7 +145,16 @@ class ArticleCard extends ConsumerWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.bookmark_outline),
-                  onPressed: () {},
+                  onPressed: () {
+                    final bookmark = Bookmark(
+                      title: article.title ?? '',
+                      url: article.link ?? '',
+                      imageUrl: article.media ?? '',
+                      source: article.cleanUrl ?? '',
+                      id: article.id ?? '',
+                    );
+                    ref.read(bookmarksProvider.notifier).saveBookmark(bookmark);
+                  },
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
