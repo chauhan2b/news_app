@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -81,22 +84,25 @@ class SettingsScreen extends ConsumerWidget {
                         },
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.water),
-                title: const Text(
-                  'Material You',
-                  style: TextStyle(
-                    fontSize: 16.0,
+              if (!kIsWeb && Platform.isAndroid)
+                ListTile(
+                  leading: const Icon(Icons.water),
+                  title: const Text(
+                    'Material You',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  subtitle: const Text('Use colors from wallpaper'),
+                  trailing: Switch(
+                    value: materialYou.value ?? true,
+                    onChanged: (value) {
+                      ref
+                          .read(materialYouProvider.notifier)
+                          .toggleMaterialYou();
+                    },
                   ),
                 ),
-                subtitle: const Text('Use colors from wallpaper'),
-                trailing: Switch(
-                  value: materialYou.value ?? true,
-                  onChanged: (value) {
-                    ref.read(materialYouProvider.notifier).toggleMaterialYou();
-                  },
-                ),
-              ),
               const SettingsHeader(text: 'My Feed'),
               ListTile(
                 leading: const Icon(Icons.newspaper_outlined),
