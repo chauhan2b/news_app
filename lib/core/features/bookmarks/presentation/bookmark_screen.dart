@@ -14,6 +14,11 @@ class BookmarkScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Bookmarks'),
+        bottom: bookmarksAsync.isLoading
+            ? const PreferredSize(
+                preferredSize: Size.fromHeight(4.0),
+                child: LinearProgressIndicator())
+            : null,
         actions: [
           IconButton(
             onPressed: () {
@@ -130,9 +135,7 @@ class BookmarkScreen extends ConsumerWidget {
                 },
               ),
         error: (error, stackTrace) => Text(error.toString()),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const SizedBox(),
       ),
     );
   }
