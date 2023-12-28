@@ -16,9 +16,9 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final darkTheme = ref.watch(darkModeProvider);
-    final systemTheme = ref.watch(systemThemeProvider);
-    final materialYou = ref.watch(materialYouProvider);
+    final darkTheme = ref.watch(darkModeProvider).requireValue;
+    final systemTheme = ref.watch(systemThemeProvider).requireValue;
+    final materialYou = ref.watch(materialYouProvider).requireValue;
 
     return Scaffold(
       appBar: AppBar(
@@ -57,14 +57,14 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
                 trailing: Switch(
-                  value: systemTheme.value ?? false,
+                  value: systemTheme,
                   onChanged: (value) {
                     ref.read(systemThemeProvider.notifier).toggleSystemTheme();
                   },
                 ),
               ),
               ListTile(
-                leading: darkTheme.value == true
+                leading: darkTheme
                     ? const Icon(Icons.dark_mode)
                     : const Icon(
                         Icons.dark_mode_outlined,
@@ -76,8 +76,8 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
                 trailing: Switch(
-                  value: darkTheme.value ?? false,
-                  onChanged: systemTheme.value == true
+                  value: darkTheme,
+                  onChanged: systemTheme
                       ? null
                       : (value) {
                           ref.read(darkModeProvider.notifier).toggleDarkMode();
@@ -95,7 +95,7 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   subtitle: const Text('Use colors from wallpaper'),
                   trailing: Switch(
-                    value: materialYou.value ?? true,
+                    value: materialYou,
                     onChanged: (value) {
                       ref
                           .read(materialYouProvider.notifier)
