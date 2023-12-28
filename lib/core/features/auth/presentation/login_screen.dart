@@ -73,126 +73,131 @@ class LoginScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Center(
           child: SingleChildScrollView(
-            child: FormBuilder(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    isRegister ? 'Welcome to News App!' : 'Hey! Welcome back',
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: FormBuilder(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      isRegister ? 'Welcome to News App!' : 'Hey! Welcome back',
+                      style: const TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 50),
-                  AuthTextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    title: 'Email',
-                    name: 'email',
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.email(),
-                    ]),
-                  ),
-                  const SizedBox(height: 16.0),
-                  AuthTextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    title: 'Password',
-                    name: 'password',
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.minLength(6),
-                    ]),
-                  ),
-                  const SizedBox(height: 16.0),
-                  Visibility(
-                    visible: isRegister,
-                    child: AuthTextField(
-                      controller: _confirmPasswordController,
-                      obscureText: true,
-                      title: 'Confirm Password',
-                      name: 'confirmPassword',
+                    const SizedBox(height: 50),
+                    AuthTextField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      title: 'Email',
+                      name: 'email',
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
-                        (value) {
-                          if (value != _passwordController.text.trim()) {
-                            return 'Password do not match';
-                          } else {
-                            return null;
-                          }
-                        }
+                        FormBuilderValidators.email(),
                       ]),
                     ),
-                  ),
-                  isRegister ? const SizedBox(height: 16.0) : const SizedBox(),
-                  Visibility(
-                    visible: !isRegister,
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pushNamed(AppRoute.passwordReset.name);
-                        },
-                        child: Text(
-                          'Forgot password?',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
+                    const SizedBox(height: 16.0),
+                    AuthTextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      title: 'Password',
+                      name: 'password',
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.minLength(6),
+                      ]),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Visibility(
+                      visible: isRegister,
+                      child: AuthTextField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        title: 'Confirm Password',
+                        name: 'confirmPassword',
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          (value) {
+                            if (value != _passwordController.text.trim()) {
+                              return 'Password do not match';
+                            } else {
+                              return null;
+                            }
+                          }
+                        ]),
+                      ),
+                    ),
+                    isRegister
+                        ? const SizedBox(height: 16.0)
+                        : const SizedBox(),
+                    Visibility(
+                      visible: !isRegister,
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoute.passwordReset.name);
+                          },
+                          child: Text(
+                            'Forgot password?',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  authController.isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : FilledButton(
-                          onPressed: () => isRegister ? register() : signIn(),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                    const SizedBox(height: 16.0),
+                    authController.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : FilledButton(
+                            onPressed: () => isRegister ? register() : signIn(),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                              ),
+                              minimumSize: MaterialStateProperty.all(
+                                const Size(double.infinity, 60),
+                              ),
+                              textStyle: MaterialStateProperty.all(
+                                const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            minimumSize: MaterialStateProperty.all(
-                              const Size(double.infinity, 60),
-                            ),
-                            textStyle: MaterialStateProperty.all(
-                              const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Text(isRegister ? 'REGISTER' : 'LOGIN'),
+                          ),
+                    const SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(isRegister
+                            ? 'Already have an account?'
+                            : 'Don\'t have an account?'),
+                        TextButton(
+                          onPressed: () {
+                            ref
+                                .read(authRegisterProvider.notifier)
+                                .toggleRegister();
+                            // reset errors when switching between login and register
+                            // _formKey.currentState!.reset();
+                          },
+                          child: Text(
+                            isRegister ? 'Login' : 'Register',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          child: Text(isRegister ? 'REGISTER' : 'LOGIN'),
                         ),
-                  const SizedBox(height: 16.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(isRegister
-                          ? 'Already have an account?'
-                          : 'Don\'t have an account?'),
-                      TextButton(
-                        onPressed: () {
-                          ref
-                              .read(authRegisterProvider.notifier)
-                              .toggleRegister();
-                          // reset errors when switching between login and register
-                          // _formKey.currentState!.reset();
-                        },
-                        child: Text(
-                          isRegister ? 'Login' : 'Register',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

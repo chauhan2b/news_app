@@ -86,90 +86,157 @@ class _SearchResultsState extends ConsumerState<SearchResultsScreen> {
           return true;
         },
         child: LayoutBuilder(builder: (context, constraints) {
-          return ListView.custom(
-            key: pageKey,
-            controller: scrollController,
-            // semanticChildCount: 99,
-            childrenDelegate: SliverChildBuilderDelegate(
-              (context, index) {
-                // when index exceeds pageSize, page will increase by 1
-                final page = index ~/ pageSize + 1;
-                final indexInPage = index % pageSize;
+          return constraints.maxWidth > 600
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.custom(
+                    key: pageKey,
+                    controller: scrollController,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth > 1000 ? 3 : 2,
+                      // childAspectRatio: 1.08,
+                      mainAxisExtent: 380,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                    ),
+                    childrenDelegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        // when index exceeds pageSize, page will increase by 1
+                        final page = index ~/ pageSize + 1;
+                        final indexInPage = index % pageSize;
 
-                final articles = ref.watch(
-                    searchResultsProvider(query: widget.query, page: page));
+                        final articles = ref.watch(searchResultsProvider(
+                            page: page, query: widget.query));
 
-                return articles.when(
-                  data: (articles) {
-                    if (articles.isEmpty) {
-                      if (index > 0) {
-                        return null;
-                      }
+                        return articles.when(
+                          data: (articles) {
+                            if (indexInPage >= articles.length) {
+                              return null;
+                            }
 
-                      return Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: size.height * 0.4),
-                          child: const Column(
-                            children: [
-                              Icon(Icons.error),
-                              SizedBox(height: 8.0),
-                              Text(
-                                'No results found',
-                                style: TextStyle(fontSize: 18.0),
+                            final article = articles[indexInPage];
+                            return ArticleCard(article: article);
+                          },
+                          error: (error, stackTrace) {
+                            if (index > 0) {
+                              return null;
+                            }
+
+                            return Container(
+                              constraints: BoxConstraints(
+                                minHeight: constraints.maxHeight,
                               ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    error.toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  TextButton(
+                                    onPressed: () async => ref.refresh(
+                                      searchResultsProvider(
+                                              page: 1, query: widget.query)
+                                          .future,
+                                    ),
+                                    child: const Text('Retry'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          loading: () {
+                            return const ArticleLoadingShimmer();
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                )
+              : ListView.custom(
+                  key: pageKey,
+                  controller: scrollController,
+                  // semanticChildCount: 99,
+                  childrenDelegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      // when index exceeds pageSize, page will increase by 1
+                      final page = index ~/ pageSize + 1;
+                      final indexInPage = index % pageSize;
+
+                      final articles = ref.watch(searchResultsProvider(
+                          query: widget.query, page: page));
+
+                      return articles.when(
+                        data: (articles) {
+                          if (articles.isEmpty) {
+                            if (index > 0) {
+                              return null;
+                            }
+
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: size.height * 0.4),
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.error),
+                                    SizedBox(height: 8.0),
+                                    Text(
+                                      'No results found',
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (indexInPage >= articles.length) {
+                            return null;
+                          }
+
+                          final article = articles[indexInPage];
+                          return Column(
+                            children: [
+                              ArticleCard(article: article),
+                              const Divider(indent: 12.0, endIndent: 12.0),
                             ],
-                          ),
-                        ),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          if (index > 0) {
+                            return null;
+                          }
+
+                          return Container(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  error.toString(),
+                                  textAlign: TextAlign.center,
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    return ref.refresh(searchResultsProvider(
+                                        query: widget.query, page: 1));
+                                  },
+                                  child: const Text('Retry'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        loading: () {
+                          return const ArticleLoadingShimmer();
+                        },
                       );
-                    }
-
-                    if (indexInPage >= articles.length) {
-                      return null;
-                    }
-
-                    final article = articles[indexInPage];
-                    return Column(
-                      children: [
-                        ArticleCard(article: article),
-                        const Divider(indent: 12.0, endIndent: 12.0),
-                      ],
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    if (index > 0) {
-                      return null;
-                    }
-
-                    return Container(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            error.toString(),
-                            textAlign: TextAlign.center,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              return ref.refresh(searchResultsProvider(
-                                  query: widget.query, page: 1));
-                            },
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  loading: () {
-                    return const ArticleLoadingShimmer();
-                  },
+                    },
+                  ),
                 );
-              },
-            ),
-          );
         }),
       ),
       floatingActionButton: AnimatedSlide(

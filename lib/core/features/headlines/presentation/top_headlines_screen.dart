@@ -54,64 +54,130 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlinesScreen> {
             headlinesProvider(page: 1).future,
           ),
           child: LayoutBuilder(builder: (context, constraints) {
-            return ListView.custom(
-              key: pageKey,
-              controller: scrollController,
-              childrenDelegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  // when index exceeds pageSize, page will increase by 1
-                  final page = index ~/ pageSize + 1;
-                  final indexInPage = index % pageSize;
+            return constraints.maxWidth > 600
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.custom(
+                      key: pageKey,
+                      controller: scrollController,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: constraints.maxWidth > 1000 ? 3 : 2,
+                        // childAspectRatio: 1.08,
+                        mainAxisExtent: 380,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                      ),
+                      childrenDelegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          // when index exceeds pageSize, page will increase by 1
+                          final page = index ~/ pageSize + 1;
+                          final indexInPage = index % pageSize;
 
-                  final headlines = ref.watch(headlinesProvider(page: page));
+                          final articles =
+                              ref.watch(headlinesProvider(page: page));
 
-                  return headlines.when(
-                    data: (headlines) {
-                      if (indexInPage >= headlines.length) {
-                        return null;
-                      }
+                          return articles.when(
+                            data: (articles) {
+                              if (indexInPage >= articles.length) {
+                                return null;
+                              }
 
-                      final headline = headlines[indexInPage];
-                      return Column(
-                        children: [
-                          ArticleCard(article: headline),
-                          const Divider(indent: 12.0, endIndent: 12.0),
-                        ],
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      if (index > 0) {
-                        return null;
-                      }
+                              final article = articles[indexInPage];
+                              return ArticleCard(article: article);
+                            },
+                            error: (error, stackTrace) {
+                              if (index > 0) {
+                                return null;
+                              }
 
-                      return Container(
-                        constraints: BoxConstraints(
-                          minHeight: constraints.maxHeight,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              error.toString(),
-                              textAlign: TextAlign.center,
-                            ),
-                            TextButton(
-                              onPressed: () async => ref.refresh(
-                                headlinesProvider(page: 1).future,
+                              return Container(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      error.toString(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    TextButton(
+                                      onPressed: () async => ref.refresh(
+                                        headlinesProvider(page: 1).future,
+                                      ),
+                                      child: const Text('Retry'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            loading: () {
+                              return const ArticleLoadingShimmer();
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                : ListView.custom(
+                    key: pageKey,
+                    controller: scrollController,
+                    childrenDelegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        // when index exceeds pageSize, page will increase by 1
+                        final page = index ~/ pageSize + 1;
+                        final indexInPage = index % pageSize;
+
+                        final headlines =
+                            ref.watch(headlinesProvider(page: page));
+
+                        return headlines.when(
+                          data: (headlines) {
+                            if (indexInPage >= headlines.length) {
+                              return null;
+                            }
+
+                            final headline = headlines[indexInPage];
+                            return Column(
+                              children: [
+                                ArticleCard(article: headline),
+                                const Divider(indent: 12.0, endIndent: 12.0),
+                              ],
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            if (index > 0) {
+                              return null;
+                            }
+
+                            return Container(
+                              constraints: BoxConstraints(
+                                minHeight: constraints.maxHeight,
                               ),
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    loading: () {
-                      return const ArticleLoadingShimmer();
-                    },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    error.toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  TextButton(
+                                    onPressed: () async => ref.refresh(
+                                      headlinesProvider(page: 1).future,
+                                    ),
+                                    child: const Text('Retry'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          loading: () {
+                            return const ArticleLoadingShimmer();
+                          },
+                        );
+                      },
+                    ),
                   );
-                },
-              ),
-            );
           }),
         ),
       ),
