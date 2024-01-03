@@ -108,6 +108,7 @@ class LoginScreen extends ConsumerWidget {
                         FormBuilderValidators.required(),
                         FormBuilderValidators.minLength(6),
                       ]),
+                      onSubmitted: (_) => isRegister ? null : signIn(),
                     ),
                     const SizedBox(height: 16.0),
                     Visibility(
