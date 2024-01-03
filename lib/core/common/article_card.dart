@@ -60,7 +60,7 @@ class ArticleCard extends ConsumerWidget {
           : () async {
               if (!await launchUrl(
                 Uri.parse(article.link!),
-                mode: LaunchMode.externalApplication,
+                mode: LaunchMode.inAppBrowserView,
               )) {
                 throw Exception('Could not launch');
               }
