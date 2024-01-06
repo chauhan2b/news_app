@@ -93,25 +93,23 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) {
-      return null;
+      print(state.uri.path);
 
-      // print(state.uri.path);
+      final authState = ref.read(authStateChangesProvider);
+      final isLoggedIn = authState.value != null;
 
-      // final authState = ref.read(authStateChangesProvider);
-      // final isLoggedIn = authState.value != null;
+      // this allows user to go to password reset screen if user is not logged in
+      if (state.uri.path == '/login/password-reset') {
+        return '/login/password-reset';
+      }
 
-      // // this allows user to go to password reset screen if user is not logged in
-      // if (state.uri.path == '/login/password-reset') {
-      //   return '/login/password-reset';
-      // }
-
-      // if (!isLoggedIn) {
-      //   return '/login';
-      // } else if (isLoggedIn && state.uri.path == '/login') {
-      //   return '/home-screen';
-      // } else {
-      //   return null;
-      // }
+      if (!isLoggedIn) {
+        return '/login';
+      } else if (isLoggedIn && state.uri.path == '/login') {
+        return '/home-screen';
+      } else {
+        return null;
+      }
     },
   );
 });
