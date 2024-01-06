@@ -22,6 +22,7 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: kIsWeb ? true : false,
         title: const Text('Settings'),
       ),
       body: Center(
@@ -114,11 +115,6 @@ class SettingsScreen extends ConsumerWidget {
               const SettingsHeader(text: 'Top Headlines'),
               const CountryDropdownButton(),
               const CategoryDropdownButton(),
-              const SizedBox(height: 8),
-              const Text(
-                'Alpha build v3.0.0.\nExpect unimplemented features and bugs.',
-                textAlign: TextAlign.center,
-              ),
               const SizedBox(height: 8),
             ],
           ),
