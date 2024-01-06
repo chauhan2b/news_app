@@ -43,50 +43,52 @@ class _MyFeedState extends ConsumerState<MyFeed> {
     const duration = Duration(milliseconds: 300);
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: isTyping
-            ? TextField(
-                focusNode: focusNode,
-                controller: controller,
-                autofocus: true,
-                textAlignVertical: TextAlignVertical.center,
-                onSubmitted: (value) {
-                  hideKeyboard();
-                  context.pushNamed(
-                    AppRoute.searchResults.name,
-                    queryParameters: {'query': value},
-                  );
-                },
-                decoration: InputDecoration(
-                  hintText: 'Search articles',
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: InkWell(
-                    borderRadius: BorderRadius.circular(30),
-                    onTap: () {
-                      controller.text == ''
-                          ? hideKeyboard()
-                          : controller.clear();
-                    },
-                    child: const Icon(Icons.close),
-                  ),
-                  border: InputBorder.none,
-                ),
-              )
-            : const Text('My Feed'),
-        actions: [
-          isTyping
-              ? Container()
-              : IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      isTyping = true;
-                    });
-                  },
-                ),
-        ],
-      ),
+      appBar: MediaQuery.of(context).size.width >= 600
+          ? null
+          : AppBar(
+              automaticallyImplyLeading: false,
+              title: isTyping
+                  ? TextField(
+                      focusNode: focusNode,
+                      controller: controller,
+                      autofocus: true,
+                      textAlignVertical: TextAlignVertical.center,
+                      onSubmitted: (value) {
+                        hideKeyboard();
+                        context.pushNamed(
+                          AppRoute.searchResults.name,
+                          queryParameters: {'query': value},
+                        );
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search articles',
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          onTap: () {
+                            controller.text == ''
+                                ? hideKeyboard()
+                                : controller.clear();
+                          },
+                          child: const Icon(Icons.close),
+                        ),
+                        border: InputBorder.none,
+                      ),
+                    )
+                  : const Text('My Feed'),
+              actions: [
+                isTyping
+                    ? Container()
+                    : IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () {
+                          setState(() {
+                            isTyping = true;
+                          });
+                        },
+                      ),
+              ],
+            ),
       body: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
           // hide fab when scrolling down and show when scrolling up
@@ -128,7 +130,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                       key: pageKey,
                       controller: scrollController,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: constraints.maxWidth > 1000 ? 3 : 2,
+                        crossAxisCount: (constraints.maxWidth / 400).round(),
                         // childAspectRatio: 1.08,
                         mainAxisExtent: 380,
                         mainAxisSpacing: 8,

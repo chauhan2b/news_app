@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_app/core/routing/router.dart';
 
 import '../../auth/presentation/controller/auth_sign_out_controller.dart';
 import '../data/user_profile_provider.dart';
@@ -15,10 +14,6 @@ class ProfileScreen extends ConsumerWidget {
 
     void signOut() {
       ref.read(authSignOutControllerProvider.notifier).signOut();
-
-      if (context.mounted) {
-        context.pushReplacementNamed(AppRoute.loginScreen.name);
-      }
     }
 
     return Scaffold(

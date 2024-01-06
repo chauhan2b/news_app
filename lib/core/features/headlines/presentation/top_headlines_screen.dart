@@ -23,9 +23,11 @@ class _TopHeadlinesState extends ConsumerState<TopHeadlinesScreen> {
     const duration = Duration(milliseconds: 300);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Top Headlines'),
-      ),
+      appBar: MediaQuery.of(context).size.width >= 600
+          ? null
+          : AppBar(
+              title: const Text('Top Headlines'),
+            ),
       body: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
           // hide fab when scrolling down and show when scrolling up
