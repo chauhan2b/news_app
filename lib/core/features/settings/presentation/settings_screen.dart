@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/core/common/settings_header.dart';
+import 'package:news_app/core/features/bookmarks/data/bookmarks_provider.dart';
 import 'package:news_app/core/theme/device_theme_provider.dart';
 import 'package:news_app/core/features/settings/presentation/category_dropdown_button.dart';
 import 'package:news_app/core/features/settings/presentation/country_dropdown_button.dart';

@@ -191,6 +191,7 @@ class _MyFeedState extends ConsumerState<MyFeed> {
                 : ListView.custom(
                     key: pageKey,
                     controller: scrollController,
+
                     // semanticChildCount: 99,
                     childrenDelegate: SliverChildBuilderDelegate(
                       (context, index) {

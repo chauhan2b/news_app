@@ -20,6 +20,7 @@ class ArticleCard extends ConsumerWidget {
     final dateTime =
         DateTime.now().difference(article.publishedDate ?? DateTime.now());
     final articleDate = DateTime.now().subtract(dateTime);
+
     return InkWell(
       // onLongPress: () {
       //   showModalBottomSheet(
@@ -143,19 +144,52 @@ class ArticleCard extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.bookmark_outline),
-                  onPressed: () {
-                    final bookmark = Bookmark(
-                      title: article.title ?? '',
-                      url: article.link ?? '',
-                      imageUrl: article.media ?? '',
-                      source: article.cleanUrl ?? '',
-                      id: article.id ?? '',
-                    );
-                    ref.read(bookmarksProvider.notifier).saveBookmark(bookmark);
-                  },
-                ),
+                Consumer(builder: (context, ref, child) {
+                  bool isBookmarked =
+                      ref.watch(bookmarkIDProvider(article.id ?? ''));
+
+                  return IconButton(
+                    onPressed: () {
+                      final bookmark = Bookmark(
+                        title: article.title ?? '',
+                        url: article.link ?? '',
+                        imageUrl: article.media ?? '',
+                        source: article.cleanUrl ?? '',
+                        id: article.id ?? '',
+                      );
+
+                      isBookmarked
+                          ? ref
+                              .read(bookmarksProvider.notifier)
+                              .removeBookmark(bookmark)
+                          : ref
+                              .read(bookmarksProvider.notifier)
+                              .saveBookmark(bookmark);
+
+                      // remove previous snackbar
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+                      // show snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            isBookmarked
+                                ? 'Removed from bookmarks'
+                                : 'Added to bookmarks',
+                          ),
+                        ),
+                      );
+
+                      // toggle bookmark to update ui
+                      ref
+                          .read(bookmarkIDProvider(article.id ?? '').notifier)
+                          .toggle();
+                    },
+                    icon: isBookmarked
+                        ? const Icon(Icons.bookmark)
+                        : const Icon(Icons.bookmark_outline),
+                  );
+                }),
                 IconButton(
                   padding: EdgeInsets.zero,
                   icon: const Icon(Icons.share_outlined),
