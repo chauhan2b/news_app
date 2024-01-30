@@ -52,3 +52,6 @@ lib/config/config.dart
 # Code generation files
 *.g.dart
 *.freezed.dart
+
+# Environment Variables
+assets/.env

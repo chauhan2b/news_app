@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:news_app/core/features/search/data/search_sort_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../config/config.dart';
 import '../../../constants/constants.dart';
 import '../../article/article.dart';
 import '../../article/news_response.dart';
@@ -36,7 +36,7 @@ FutureOr<List<Article>> searchResults(
 
   try {
     final response =
-        await http.get(url, headers: {'x-api-key': Config.newsCatcherApiKey});
+        await http.get(url, headers: {'x-api-key': dotenv.env['API_KEY']!});
     if (response.statusCode == 200) {
       final body = json.decode(response.body);
       final newsResponse = NewsResponse.fromJson(body);

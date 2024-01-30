@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_app/core/features/auth/presentation/password_reset_screen.dart';
@@ -93,7 +94,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) {
-      print(state.uri.path);
+      if (kDebugMode) {
+        print(state.uri.path);
+      }
 
       final authState = ref.read(authStateChangesProvider);
       final isLoggedIn = authState.value != null;
