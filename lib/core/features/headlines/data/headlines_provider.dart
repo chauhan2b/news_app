@@ -40,7 +40,12 @@ FutureOr<List<Article>> headlines(HeadlinesRef ref, {required int page}) async {
       final newsResponse = NewsResponse.fromJson(body);
       return newsResponse.articles ?? [];
     } else {
-      throw 'Error fetching news articles!';
+      final body = json.decode(response.body);
+      if (body['error_code'] == "LimitReached") {
+        throw "API limit reached";
+      } else {
+        throw 'Error fetching news articles!';
+      }
     }
   } on SocketException {
     throw ('Unable to fetch headlines. Check your internet connection and try again!');
