@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_app/core/features/auth/presentation/email_verification_screen.dart';
 import 'package:news_app/core/features/auth/presentation/password_reset_screen.dart';
 import 'package:news_app/core/features/bookmarks/presentation/bookmark_screen.dart';
 import 'package:news_app/core/features/profile/presentation/profile_screen.dart';
@@ -25,6 +26,7 @@ enum AppRoute {
   passwordReset,
   myProfile,
   bookmarkScreen,
+  emailVerificationScreen,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -43,6 +45,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               name: AppRoute.passwordReset.name,
               path: 'password-reset',
               builder: (context, state) => PasswordResetScreen(),
+            ),
+            GoRoute(
+              name: AppRoute.emailVerificationScreen.name,
+              path: 'email-verification',
+              builder: (context, state) => const EmailVerificationScreen(),
             ),
           ]),
       GoRoute(
@@ -93,8 +100,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
     ],
-    redirect: (context, state) {
+    redirect: (context, state) async {
       if (kDebugMode) {
+        print('redirect called');
+
         print(state.uri.path);
       }
 
@@ -108,10 +117,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       if (!isLoggedIn) {
         return '/login';
-      } else if (isLoggedIn && state.uri.path == '/login') {
-        return '/home-screen';
       } else {
-        return null;
+        final user = authState.value!;
+        await user.reload();
+
+        if (!user.emailVerified) {
+          return '/login/email-verification';
+        } else {
+          if (state.uri.path == '/login') {
+            return '/home-screen';
+          } else {
+            return null;
+          }
+        }
       }
     },
   );

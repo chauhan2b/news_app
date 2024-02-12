@@ -40,6 +40,9 @@ class AuthRepository {
         password: password,
       );
 
+      // send email verification
+      await _firebaseAuth.currentUser!.sendEmailVerification();
+
       // store user profile data with one default domain
       await _firebaseFirestore
           .collection('users')
