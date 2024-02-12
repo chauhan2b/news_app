@@ -42,7 +42,7 @@ FutureOr<List<Article>> headlines(HeadlinesRef ref, {required int page}) async {
     } else {
       final body = json.decode(response.body);
       if (body['error_code'] == "LimitReached") {
-        throw "API limit reached";
+        throw "API limit reached: ${body['message']}";
       } else {
         throw 'Error fetching news articles!';
       }
