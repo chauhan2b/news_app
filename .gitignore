@@ -54,4 +54,4 @@ lib/config/config.dart
 *.freezed.dart
 
 # Environment Variables
-assets/.env
+.env

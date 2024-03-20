@@ -27,7 +27,7 @@ void main() async {
   // }
 
   // load environment variables
-  await dotenv.load();
+  await dotenv.load(fileName: ".env");
 
   // keeps device in portrait mode
   SystemChrome.setPreferredOrientations([
