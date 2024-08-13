@@ -55,3 +55,6 @@ lib/config/config.dart
 
 # Environment Variables
 .env
+lib/firebase_options.dart
+android/app/google-services.json
+firebase.json
