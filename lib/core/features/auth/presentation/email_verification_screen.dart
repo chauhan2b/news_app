@@ -28,6 +28,12 @@ class EmailVerificationScreen extends ConsumerWidget {
               ref.invalidate(authRepositoryProvider);
             },
             child: const Text('Reload'),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(authRepositoryProvider).signOut();
+            },
+            child: const Text('Logout'),
           )
         ],
       )),
