@@ -147,16 +147,16 @@ class LoginScreen extends ConsumerWidget {
                         : FilledButton(
                             onPressed: () => isRegister ? register() : signIn(),
                             style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
+                              shape: WidgetStateProperty.all(
                                 const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
                               ),
-                              minimumSize: MaterialStateProperty.all(
+                              minimumSize: WidgetStateProperty.all(
                                 const Size(double.infinity, 60),
                               ),
-                              textStyle: MaterialStateProperty.all(
+                              textStyle: WidgetStateProperty.all(
                                 const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
