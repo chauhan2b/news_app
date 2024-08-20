@@ -15,17 +15,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // use firebase emulator if app is in debug mode
-  // if (kDebugMode) {
-  //   try {
-  //     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-  //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  //   } catch (e) {
-  //     // ignore: avoid_print
-  //     print(e);
-  //   }
-  // }
-
   // load environment variables
   await dotenv.load(fileName: ".env");
 
