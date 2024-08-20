@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:news_app/core/features/feed/data/domains_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../constants/constants.dart';
 import '../../article/article.dart';
 import '../../article/news_response.dart';
+import 'domains_provider.dart';
 
 part 'feed_provider.g.dart';
 

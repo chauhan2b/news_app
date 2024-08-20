@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_app/core/features/auth/presentation/email_verification_screen.dart';
-import 'package:news_app/core/features/auth/presentation/password_reset_screen.dart';
-import 'package:news_app/core/features/bookmarks/presentation/bookmark_screen.dart';
-import 'package:news_app/core/features/profile/presentation/profile_screen.dart';
-import 'package:news_app/core/features/feed/presentation/manage_sources_screen.dart';
-import 'package:news_app/core/features/feed/presentation/my_feed.dart';
-import 'package:news_app/core/features/search/presentation/search_results_screen.dart';
-import 'package:news_app/core/features/settings/presentation/settings_screen.dart';
-import 'package:news_app/core/features/headlines/presentation/top_headlines_screen.dart';
 
 import '../features/auth/data/auth_repository.dart';
+import '../features/auth/presentation/email_verification_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
+import '../features/auth/presentation/password_reset_screen.dart';
+import '../features/bookmarks/presentation/bookmark_screen.dart';
+import '../features/feed/presentation/manage_sources_screen.dart';
+import '../features/feed/presentation/my_feed.dart';
+import '../features/headlines/presentation/top_headlines_screen.dart';
+import '../features/profile/presentation/profile_screen.dart';
+import '../features/search/presentation/search_results_screen.dart';
+import '../features/settings/presentation/settings_screen.dart';
 import '../home_screen.dart';
 
 enum AppRoute {

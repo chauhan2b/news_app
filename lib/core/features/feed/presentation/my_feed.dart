@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_app/core/common/article_card.dart';
-import 'package:news_app/core/common/article_loading_shimmer.dart';
-import 'package:news_app/core/features/feed/data/feed_provider.dart';
-import 'package:news_app/core/routing/router.dart';
 
+import '../../../common/article_card.dart';
+import '../../../common/article_loading_shimmer.dart';
 import '../../../constants/constants.dart';
+import '../../../routing/router.dart';
+import '../data/feed_provider.dart';
 
 class MyFeed extends ConsumerStatefulWidget {
   const MyFeed({super.key});

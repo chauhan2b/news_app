@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/core/common/article_card.dart';
-import 'package:news_app/core/common/article_loading_shimmer.dart';
-import 'package:news_app/core/features/headlines/data/headlines_provider.dart';
 
+import '../../../common/article_card.dart';
+import '../../../common/article_loading_shimmer.dart';
 import '../../../constants/constants.dart';
+import '../data/headlines_provider.dart';
 
 class TopHeadlinesScreen extends ConsumerStatefulWidget {
   const TopHeadlinesScreen({super.key});

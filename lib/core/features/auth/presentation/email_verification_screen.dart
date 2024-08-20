@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/core/features/auth/data/auth_repository.dart';
+
+import '../data/auth_repository.dart';
 
 class EmailVerificationScreen extends ConsumerWidget {
   const EmailVerificationScreen({super.key});

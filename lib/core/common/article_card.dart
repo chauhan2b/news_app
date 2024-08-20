@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/core/features/bookmarks/data/bookmarks_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../features/article/article.dart';
+import '../features/bookmarks/data/bookmarks_provider.dart';
 import '../features/bookmarks/domain/bookmark.dart';
 
 class ArticleCard extends ConsumerWidget {

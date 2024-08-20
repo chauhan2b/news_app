@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/core/common/article_card.dart';
-import 'package:news_app/core/common/article_loading_shimmer.dart';
-import 'package:news_app/core/features/search/data/search_sort_provider.dart';
-import 'package:news_app/core/features/feed/presentation/show_dialog_box.dart';
 
+import '../../../common/article_card.dart';
+import '../../../common/article_loading_shimmer.dart';
 import '../../../constants/constants.dart';
+import '../../feed/presentation/show_dialog_box.dart';
 import '../data/search_results_provider.dart';
+import '../data/search_sort_provider.dart';
 
 class SearchResultsScreen extends ConsumerStatefulWidget {
   const SearchResultsScreen({

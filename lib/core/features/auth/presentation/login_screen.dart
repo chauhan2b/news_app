@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_app/core/features/auth/data/auth_register_provider.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:news_app/core/routing/router.dart';
 
 import '../../../common/auth_text_field.dart';
+import '../../../routing/router.dart';
+import '../data/auth_register_provider.dart';
 import 'controller/auth_sign_in_controller.dart';
 
 class LoginScreen extends ConsumerWidget {

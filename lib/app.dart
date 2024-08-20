@@ -1,11 +1,11 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/core/theme/device_theme_provider.dart';
 
 import 'package:news_app/core/routing/router.dart';
 
 import 'core/constants/app_theme.dart';
+import 'core/theme/device_theme_provider.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({
