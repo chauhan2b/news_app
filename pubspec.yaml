@@ -1,10 +1,10 @@
 name: news_app
 description: A simple app which fetches news articles from user's provided domains.
-publish_to: 'none'
-version: 3.0.0-alpha
+publish_to: "none"
+version: 1.0.1
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   cloud_firestore: ^4.13.3
